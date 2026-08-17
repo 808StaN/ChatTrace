@@ -68,6 +68,7 @@ function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
     displayName:
       getString(raw, 'displayName') ?? (tags ? getString(tags, 'display-name') : undefined),
     color: parseNameColor(tags),
+    roomId: tags ? getString(tags, 'room-id') : undefined,
     timestamp,
     text,
     badges: parseBadges(tags),

@@ -6,7 +6,11 @@ export default defineConfig({
   manifest: {
     name: 'Twitch User Logs',
     description: 'View existing Supa Logs history for Twitch chatters.',
-    host_permissions: ['https://www.twitch.tv/*', 'https://logs.zonian.dev/*'],
+    host_permissions: [
+      'https://www.twitch.tv/*',
+      'https://logs.zonian.dev/*',
+      'https://badges.twitch.tv/*',
+    ],
   },
   vite: () => ({
     plugins: [tailwindcss()],

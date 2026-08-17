@@ -1,18 +1,14 @@
 import type { ChatMessage } from '@/services/logs';
+import type { BadgeImageLookup } from '@/services/twitchBadges';
 import { formatMessageTime } from '@/utils/dates';
 
-const BADGE_LABELS: Record<string, string> = {
-  broadcaster: 'BR',
-  moderator: 'MOD',
-  subscriber: 'SUB',
-  vip: 'VIP',
-};
-
-function badgeClassName(name: string): string {
-  return `tul-badge tul-badge-${name in BADGE_LABELS ? name : 'default'}`;
-}
-
-export function LogsMessage({ message }: { message: ChatMessage }) {
+export function LogsMessage({
+  message,
+  badgeImages,
+}: {
+  message: ChatMessage;
+  badgeImages: BadgeImageLookup;
+}) {
   return (
     <article className="tul-message">
       <time className="tul-message-time" dateTime={message.timestamp.toISOString()}>
@@ -20,15 +16,21 @@ export function LogsMessage({ message }: { message: ChatMessage }) {
       </time>
       <div className="tul-message-body">
         <span className="tul-message-meta">
-          {message.badges?.map((badge) => (
-            <span
-              key={`${badge.name}-${badge.version ?? ''}`}
-              className={badgeClassName(badge.name)}
-              title={badge.name}
-            >
-              {BADGE_LABELS[badge.name] ?? badge.name.slice(0, 3).toUpperCase()}
-            </span>
-          ))}
+          {message.badges?.map((badge) => {
+            const imageUrl = badgeImages[`${badge.name}/${badge.version ?? '1'}`];
+            return imageUrl ? (
+              <img
+                key={`${badge.name}-${badge.version ?? ''}`}
+                className="tul-badge-image"
+                src={imageUrl}
+                alt={badge.name}
+                title={badge.name}
+                onError={(event) => {
+                  event.currentTarget.hidden = true;
+                }}
+              />
+            ) : null;
+          })}
           <span className="tul-message-author" style={{ color: message.color }}>
             {message.displayName ?? message.username}
           </span>

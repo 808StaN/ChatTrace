@@ -14,6 +14,7 @@ export interface ChatMessage {
   username: string;
   displayName?: string;
   color?: string;
+  roomId?: string;
   timestamp: Date;
   text: string;
   badges?: ChatBadge[];

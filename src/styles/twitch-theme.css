@@ -227,36 +227,10 @@
   vertical-align: baseline;
 }
 
-.tul-badge {
-  display: inline-flex;
-  height: 14px;
-  min-width: 14px;
-  align-items: center;
-  justify-content: center;
-  padding: 0 2px;
-  border-radius: 2px;
-  background: #6d6d78;
-  color: #fff;
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1;
-}
-
-.tul-badge-broadcaster {
-  background: #e91916;
-}
-
-.tul-badge-moderator {
-  background: #00ad03;
-}
-
-.tul-badge-subscriber {
-  background: #9147ff;
-}
-
-.tul-badge-vip {
-  background: #e005b9;
+.tul-badge-image {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
 
 .tul-message-author {
