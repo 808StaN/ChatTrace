@@ -188,8 +188,8 @@
 
 .tul-message {
   display: grid;
-  grid-template-columns: 42px minmax(0, 1fr);
-  gap: 6px;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 3px;
   padding: 3px 12px;
 }
 
@@ -198,7 +198,7 @@
 }
 
 .tul-message-time {
-  padding-top: 2px;
+  padding-top: 1px;
   color: var(--logs-text-muted);
   font-size: 11px;
   line-height: 1.35;
@@ -219,17 +219,17 @@
 }
 
 .tul-message-meta {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
+  display: inline;
   margin-right: 4px;
-  vertical-align: baseline;
 }
 
 .tul-badge-image {
+  display: inline-block;
   width: 18px;
   height: 18px;
+  margin-right: 3px;
   object-fit: contain;
+  vertical-align: -4px;
 }
 
 .tul-message-author {
