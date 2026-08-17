@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+
+:host {
+  --logs-bg: #18181b;
+  --logs-bg-secondary: #26262c;
+  --logs-border: #3a3a40;
+  --logs-text: #efeff1;
+  --logs-text-muted: #adadb8;
+  --logs-accent: #9147ff;
+  --logs-hover: #303036;
+}
