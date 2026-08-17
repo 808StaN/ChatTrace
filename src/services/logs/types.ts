@@ -33,8 +33,16 @@ export interface ChatMessagePage {
 }
 
 export interface LogsProvider {
-  getAvailableLogs(channel: string, username: string, signal?: AbortSignal): Promise<AvailableLogDate[]>;
-  getMessages(channel: string, username: string, options: GetMessagesOptions): Promise<ChatMessagePage>;
+  getAvailableLogs(
+    channel: string,
+    username: string,
+    signal?: AbortSignal,
+  ): Promise<AvailableLogDate[]>;
+  getMessages(
+    channel: string,
+    username: string,
+    options: GetMessagesOptions,
+  ): Promise<ChatMessagePage>;
 }
 
 export type LogsErrorKind = 'not-found' | 'rate-limited' | 'network' | 'invalid-response';

@@ -60,7 +60,8 @@ function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
   return {
     id: getString(raw, 'id') ?? (tags ? getString(tags, 'id') : undefined),
     username,
-    displayName: getString(raw, 'displayName') ?? (tags ? getString(tags, 'display-name') : undefined),
+    displayName:
+      getString(raw, 'displayName') ?? (tags ? getString(tags, 'display-name') : undefined),
     timestamp,
     text,
     badges: parseBadges(tags),
@@ -70,7 +71,10 @@ function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
 
 export function normalizeSupaMessages(response: unknown, username: string): ChatMessage[] {
   if (!isRecord(response) || !Array.isArray(response.messages)) {
-    throw new LogsProviderError('invalid-response', 'Supa Logs returned an unexpected message response.');
+    throw new LogsProviderError(
+      'invalid-response',
+      'Supa Logs returned an unexpected message response.',
+    );
   }
 
   return response.messages
@@ -81,7 +85,10 @@ export function normalizeSupaMessages(response: unknown, username: string): Chat
 
 function normalizeAvailableDates(response: unknown): AvailableLogDate[] {
   if (!isRecord(response) || !Array.isArray(response.availableLogs)) {
-    throw new LogsProviderError('invalid-response', 'Supa Logs returned an unexpected availability response.');
+    throw new LogsProviderError(
+      'invalid-response',
+      'Supa Logs returned an unexpected availability response.',
+    );
   }
 
   const availableDates = response.availableLogs.flatMap((rawDate) => {
@@ -124,16 +131,28 @@ async function parseResponse(response: Response): Promise<unknown> {
   try {
     return (await response.json()) as unknown;
   } catch {
-    throw new LogsProviderError('invalid-response', 'Supa Logs returned invalid JSON.', response.status);
+    throw new LogsProviderError(
+      'invalid-response',
+      'Supa Logs returned invalid JSON.',
+      response.status,
+    );
   }
 }
 
 function getResponseError(response: Response): LogsProviderError {
   if (response.status === 404) {
-    return new LogsProviderError('not-found', 'No logs found for this user on this channel.', response.status);
+    return new LogsProviderError(
+      'not-found',
+      'No logs found for this user on this channel.',
+      response.status,
+    );
   }
   if (response.status === 429) {
-    return new LogsProviderError('rate-limited', 'Too many requests. Try again shortly.', response.status);
+    return new LogsProviderError(
+      'rate-limited',
+      'Too many requests. Try again shortly.',
+      response.status,
+    );
   }
   return new LogsProviderError('network', 'Could not load logs.', response.status);
 }
@@ -145,8 +164,15 @@ function getResponseError(response: Response): LogsProviderError {
 export class SupaLogsProvider implements LogsProvider {
   private readonly messageCache = new Map<string, CacheEntry>();
 
-  async getAvailableLogs(channel: string, username: string, signal?: AbortSignal): Promise<AvailableLogDate[]> {
-    const query = new URLSearchParams({ channel: channel.toLowerCase(), user: username.toLowerCase() });
+  async getAvailableLogs(
+    channel: string,
+    username: string,
+    signal?: AbortSignal,
+  ): Promise<AvailableLogDate[]> {
+    const query = new URLSearchParams({
+      channel: channel.toLowerCase(),
+      user: username.toLowerCase(),
+    });
     const response = await this.fetch(`${API_BASE_URL}/list?${query}`, signal);
     return normalizeAvailableDates(await parseResponse(response));
   }
@@ -160,9 +186,15 @@ export class SupaLogsProvider implements LogsProvider {
     const normalizedUsername = username.toLowerCase();
     const key = cacheKey(normalizedChannel, normalizedUsername, options.period);
     const cached = this.messageCache.get(key);
-    const messages = cached && cached.expiresAt > Date.now()
-      ? cached.messages
-      : await this.fetchPeriod(normalizedChannel, normalizedUsername, options.period, options.signal);
+    const messages =
+      cached && cached.expiresAt > Date.now()
+        ? cached.messages
+        : await this.fetchPeriod(
+            normalizedChannel,
+            normalizedUsername,
+            options.period,
+            options.signal,
+          );
 
     const offset = options.offset ?? 0;
     const limit = options.limit ?? DEFAULT_PAGE_SIZE;

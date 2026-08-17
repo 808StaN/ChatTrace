@@ -19,7 +19,9 @@ const PAGE_SIZE = 50;
 const MAX_LOADED_MESSAGES = 2_000;
 
 function appendUniqueMessages(existing: ChatMessage[], incoming: ChatMessage[]): ChatMessage[] {
-  const knownIds = new Set(existing.map((message) => message.id ?? `${message.timestamp.valueOf()}:${message.text}`));
+  const knownIds = new Set(
+    existing.map((message) => message.id ?? `${message.timestamp.valueOf()}:${message.text}`),
+  );
   const uniqueIncoming = incoming.filter((message) => {
     const key = message.id ?? `${message.timestamp.valueOf()}:${message.text}`;
     if (knownIds.has(key)) {
@@ -102,7 +104,9 @@ export function useUserLogs(channel: string | null, username: string | null): Us
         ) {
           return;
         }
-        setStatus(isProviderError(error) && error.kind === 'rate-limited' ? 'rate-limited' : 'error');
+        setStatus(
+          isProviderError(error) && error.kind === 'rate-limited' ? 'rate-limited' : 'error',
+        );
       }
     })();
 
@@ -116,7 +120,13 @@ export function useUserLogs(channel: string | null, username: string | null): Us
   const retry = useCallback(() => setRetryToken((token) => token + 1), []);
 
   const loadOlder = useCallback(() => {
-    if (!channel || !username || status !== 'ready' || isLoadingOlder || availableDates.length === 0) {
+    if (
+      !channel ||
+      !username ||
+      status !== 'ready' ||
+      isLoadingOlder ||
+      availableDates.length === 0
+    ) {
       return;
     }
 
@@ -150,7 +160,9 @@ export function useUserLogs(channel: string | null, username: string | null): Us
           return;
         }
         if (!(error instanceof DOMException && error.name === 'AbortError')) {
-          setStatus(isProviderError(error) && error.kind === 'rate-limited' ? 'rate-limited' : 'error');
+          setStatus(
+            isProviderError(error) && error.kind === 'rate-limited' ? 'rate-limited' : 'error',
+          );
         }
       })
       .finally(() => {
@@ -158,7 +170,17 @@ export function useUserLogs(channel: string | null, username: string | null): Us
           setIsLoadingOlder(false);
         }
       });
-  }, [availableDates, channel, isLoadingOlder, messages.length, nextOffset, periodIndex, provider, status, username]);
+  }, [
+    availableDates,
+    channel,
+    isLoadingOlder,
+    messages.length,
+    nextOffset,
+    periodIndex,
+    provider,
+    status,
+    username,
+  ]);
 
   return {
     messages,

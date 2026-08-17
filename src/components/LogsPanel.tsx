@@ -16,7 +16,10 @@ interface LogsPanelProps {
 
 export function LogsPanel({ channel, username, onClose }: LogsPanelProps) {
   const [query, setQuery] = useState('');
-  const { messages, status, isLoadingOlder, canLoadOlder, retry, loadOlder } = useUserLogs(channel, username);
+  const { messages, status, isLoadingOlder, canLoadOlder, retry, loadOlder } = useUserLogs(
+    channel,
+    username,
+  );
   const filteredMessages = filterMessages(messages, query);
 
   return (
@@ -25,16 +28,25 @@ export function LogsPanel({ channel, username, onClose }: LogsPanelProps) {
       <LogsSearch query={query} onChange={setQuery} />
       <div className="tul-content">
         {status === 'loading' && <LoadingState />}
-        {status === 'empty' && <EmptyState>No logs found for this user on this channel.</EmptyState>}
+        {status === 'empty' && (
+          <EmptyState>No logs found for this user on this channel.</EmptyState>
+        )}
         {(status === 'error' || status === 'rate-limited') && (
           <ErrorState rateLimited={status === 'rate-limited'} onRetry={retry} />
         )}
         {status === 'ready' && filteredMessages.length === 0 && (
           <EmptyState>No loaded messages match your search.</EmptyState>
         )}
-        {status === 'ready' && filteredMessages.length > 0 && <LogsList messages={filteredMessages} />}
+        {status === 'ready' && filteredMessages.length > 0 && (
+          <LogsList messages={filteredMessages} />
+        )}
         {status === 'ready' && canLoadOlder && (
-          <button className="tul-load-button" type="button" disabled={isLoadingOlder} onClick={loadOlder}>
+          <button
+            className="tul-load-button"
+            type="button"
+            disabled={isLoadingOlder}
+            onClick={loadOlder}
+          >
             {isLoadingOlder ? 'Loading...' : 'Load older messages'}
           </button>
         )}

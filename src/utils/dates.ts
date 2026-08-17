@@ -15,14 +15,18 @@ export function dayLabel(date: Date, locale: string = navigator.language): strin
   if (difference === 1) {
     return 'Yesterday';
   }
-  return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(
+    date,
+  );
 }
 
 export function formatMessageTime(date: Date, locale: string = navigator.language): string {
   return new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(date);
 }
 
-export function groupMessagesByDay(messages: ChatMessage[]): Array<{ date: Date; messages: ChatMessage[] }> {
+export function groupMessagesByDay(
+  messages: ChatMessage[],
+): Array<{ date: Date; messages: ChatMessage[] }> {
   const groups = new Map<string, { date: Date; messages: ChatMessage[] }>();
   for (const message of messages) {
     const key = dayKey(message.timestamp);

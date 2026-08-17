@@ -52,7 +52,13 @@
   background: var(--logs-bg);
   box-shadow: 0 10px 30px rgb(0 0 0 / 45%);
   color: var(--logs-text);
-  font-family: Inter, Roobert, Helvetica Neue, Helvetica, Arial, sans-serif;
+  font-family:
+    Inter,
+    Roobert,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 .tul-header {
