@@ -4,24 +4,27 @@ import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 interface PanelPosition {
   height: number;
   left: number;
+  side: 'left' | 'right';
   top: number;
 }
 
 function positionsMatch(left: PanelPosition, right: PanelPosition): boolean {
-  return left.height === right.height && left.left === right.left && left.top === right.top;
+  return (
+    left.height === right.height &&
+    left.left === right.left &&
+    left.side === right.side &&
+    left.top === right.top
+  );
 }
 
 const PANEL_WIDTH = 390;
 const VIEWPORT_GUTTER = 8;
-const CARD_GAP = 8;
+const CARD_GAP = 0;
 
 function getPanelPosition(anchor: Element): PanelPosition {
   const card = anchor.getBoundingClientRect();
-  const maxPanelHeight = Math.max(280, window.innerHeight - VIEWPORT_GUTTER * 2);
-  const panelHeight = Math.min(
-    maxPanelHeight,
-    Math.max(360, window.innerHeight - card.top - VIEWPORT_GUTTER),
-  );
+  const availableHeight = window.innerHeight - VIEWPORT_GUTTER * 2;
+  const panelHeight = Math.max(240, Math.min(360, Math.round(availableHeight / 2)));
   const rightSideLeft = card.right + CARD_GAP;
   const leftSideLeft = card.left - PANEL_WIDTH - CARD_GAP;
   const fitsRight = rightSideLeft + PANEL_WIDTH <= window.innerWidth - VIEWPORT_GUTTER;
@@ -31,7 +34,7 @@ function getPanelPosition(anchor: Element): PanelPosition {
     window.innerHeight - panelHeight - VIEWPORT_GUTTER,
   );
 
-  return { height: panelHeight, left, top };
+  return { height: panelHeight, left, side: fitsRight ? 'right' : 'left', top };
 }
 
 export function useUserCardAnchor(anchor: Element) {
@@ -48,6 +51,7 @@ export function useUserCardAnchor(anchor: Element) {
     anchorRef.current = anchor;
     const anchorElement = anchorRef.current as HTMLElement;
     const originalTranslate = anchorElement.style.translate;
+    const originalAttachmentSide = anchorElement.getAttribute('data-twitch-user-logs-anchor');
     let frameId: number | undefined;
     let trackingFrameId: number | undefined;
     let previousPosition = getPanelPosition(anchorElement);
@@ -56,6 +60,7 @@ export function useUserCardAnchor(anchor: Element) {
       const nextPosition = getPanelPosition(anchorElement);
       if (!positionsMatch(previousPosition, nextPosition)) {
         previousPosition = nextPosition;
+        anchorElement.setAttribute('data-twitch-user-logs-anchor', nextPosition.side);
         setPosition(nextPosition);
       }
     };
@@ -71,6 +76,7 @@ export function useUserCardAnchor(anchor: Element) {
     mutationObserver.observe(anchorElement, { attributes: true, childList: true, subtree: true });
     window.addEventListener('resize', schedulePositionUpdate);
     window.addEventListener('scroll', schedulePositionUpdate, true);
+    anchorElement.setAttribute('data-twitch-user-logs-anchor', previousPosition.side);
     schedulePositionUpdate();
 
     // Twitch can move viewer cards by updating an ancestor's transform without a DOM mutation.
@@ -92,46 +98,43 @@ export function useUserCardAnchor(anchor: Element) {
         window.cancelAnimationFrame(trackingFrameId);
       }
       anchorElement.style.translate = originalTranslate;
+      if (originalAttachmentSide === null) {
+        anchorElement.removeAttribute('data-twitch-user-logs-anchor');
+      } else {
+        anchorElement.setAttribute('data-twitch-user-logs-anchor', originalAttachmentSide);
+      }
     };
   }, [anchor]);
 
-  const onHeaderPointerDown = useCallback(
-    (event: ReactPointerEvent<HTMLElement>) => {
-      if (
-        event.button !== 0 ||
-        (event.target instanceof Element && event.target.closest('button'))
-      ) {
-        return;
-      }
+  const onHeaderPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
+    if (event.button !== 0 || (event.target instanceof Element && event.target.closest('button'))) {
+      return;
+    }
 
-      const style = (anchorRef.current as HTMLElement).style;
-      const [translateX = '0', translateY = '0'] = style.translate.split(' ');
-      drag.current = {
-        startX: event.clientX,
-        startY: event.clientY,
-        translateX: Number.parseFloat(translateX) || 0,
-        translateY: Number.parseFloat(translateY) || 0,
-      };
-      event.currentTarget.setPointerCapture(event.pointerId);
-    },
-    [],
-  );
+    const style = (anchorRef.current as HTMLElement).style;
+    const [translateX = '0', translateY = '0'] = style.translate.split(' ');
+    drag.current = {
+      startX: event.clientX,
+      startY: event.clientY,
+      translateX: Number.parseFloat(translateX) || 0,
+      translateY: Number.parseFloat(translateY) || 0,
+    };
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }, []);
 
-  const onHeaderPointerMove = useCallback(
-    (event: ReactPointerEvent<HTMLElement>) => {
-      if (!drag.current) {
-        return;
-      }
+  const onHeaderPointerMove = useCallback((event: ReactPointerEvent<HTMLElement>) => {
+    if (!drag.current) {
+      return;
+    }
 
-      const deltaX = event.clientX - drag.current.startX;
-      const deltaY = event.clientY - drag.current.startY;
-      const anchorElement = anchorRef.current as HTMLElement;
-      anchorElement.style.translate =
-        `${drag.current.translateX + deltaX}px ${drag.current.translateY + deltaY}px`;
-      setPosition(getPanelPosition(anchorElement));
-    },
-    [],
-  );
+    const deltaX = event.clientX - drag.current.startX;
+    const deltaY = event.clientY - drag.current.startY;
+    const anchorElement = anchorRef.current as HTMLElement;
+    anchorElement.style.translate = `${drag.current.translateX + deltaX}px ${drag.current.translateY + deltaY}px`;
+    const nextPosition = getPanelPosition(anchorElement);
+    anchorElement.setAttribute('data-twitch-user-logs-anchor', nextPosition.side);
+    setPosition(nextPosition);
+  }, []);
 
   const onHeaderPointerUp = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (!drag.current) {
@@ -149,5 +152,11 @@ export function useUserCardAnchor(anchor: Element) {
     '--tul-panel-top': `${position.top}px`,
   } as CSSProperties;
 
-  return { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle };
+  return {
+    onHeaderPointerDown,
+    onHeaderPointerMove,
+    onHeaderPointerUp,
+    panelStyle,
+    side: position.side,
+  };
 }
