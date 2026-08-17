@@ -17,14 +17,10 @@ const CARD_GAP = -1;
 
 function getPanelPosition(anchor: Element): PanelPosition {
   const card = anchor.getBoundingClientRect();
-  const availableHeight = window.innerHeight - VIEWPORT_GUTTER * 2;
-  const panelHeight = Math.min(Math.round(card.height * 2), availableHeight);
+  const panelHeight = Math.round(card.height * 2);
   const leftSideLeft = card.left - PANEL_WIDTH - CARD_GAP;
   const left = Math.max(VIEWPORT_GUTTER, leftSideLeft);
-  const top = Math.min(
-    Math.max(VIEWPORT_GUTTER, card.top),
-    window.innerHeight - panelHeight - VIEWPORT_GUTTER,
-  );
+  const top = card.top;
 
   return { height: panelHeight, left, top };
 }
