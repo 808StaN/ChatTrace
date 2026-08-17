@@ -92,7 +92,6 @@
 }
 
 .tul-eyebrow,
-.tul-channel,
 .tul-day-group h3,
 .tul-message-text {
   margin: 0;
@@ -104,19 +103,6 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.tul-title {
-  margin: 3px 0 0;
-  color: var(--logs-text);
-  font-size: 18px;
-  line-height: 1.2;
-}
-
-.tul-channel {
-  margin-top: 3px;
-  color: var(--logs-text-muted);
-  font-size: 13px;
 }
 
 .tul-icon-button {

@@ -33,8 +33,6 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
       aria-label={`Logs for ${username} in ${channel}`}
     >
       <LogsHeader
-        channel={channel}
-        username={username}
         onClose={onClose}
         onPointerDown={onHeaderPointerDown}
         onPointerMove={onHeaderPointerMove}
