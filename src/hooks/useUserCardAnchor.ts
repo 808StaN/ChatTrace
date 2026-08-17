@@ -5,15 +5,33 @@ interface PanelPosition {
   height: number;
   left: number;
   top: number;
+  zIndex: number;
 }
 
 function positionsMatch(left: PanelPosition, right: PanelPosition): boolean {
-  return left.height === right.height && left.left === right.left && left.top === right.top;
+  return (
+    left.height === right.height &&
+    left.left === right.left &&
+    left.top === right.top &&
+    left.zIndex === right.zIndex
+  );
 }
 
 const PANEL_WIDTH = 390;
 const VIEWPORT_GUTTER = 8;
 const CARD_GAP = -1;
+
+function getCardZIndex(anchor: Element): number {
+  let element: HTMLElement | null = anchor as HTMLElement;
+  while (element && element !== document.body) {
+    const zIndex = Number.parseInt(window.getComputedStyle(element).zIndex, 10);
+    if (Number.isFinite(zIndex)) {
+      return zIndex;
+    }
+    element = element.parentElement;
+  }
+  return 1;
+}
 
 function getPanelPosition(anchor: Element): PanelPosition {
   const card = anchor.getBoundingClientRect();
@@ -22,7 +40,7 @@ function getPanelPosition(anchor: Element): PanelPosition {
   const left = Math.max(VIEWPORT_GUTTER, leftSideLeft);
   const top = card.top;
 
-  return { height: panelHeight, left, top };
+  return { height: panelHeight, left, top, zIndex: getCardZIndex(anchor) };
 }
 
 export function useUserCardAnchor(anchor: Element) {
@@ -129,6 +147,7 @@ export function useUserCardAnchor(anchor: Element) {
     '--tul-panel-height': `${position.height}px`,
     '--tul-panel-left': `${position.left}px`,
     '--tul-panel-top': `${position.top}px`,
+    zIndex: position.zIndex,
   } as CSSProperties;
 
   return { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle };
