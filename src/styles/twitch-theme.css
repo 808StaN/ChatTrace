@@ -58,7 +58,7 @@
   top: var(--tul-panel-top);
   left: var(--tul-panel-left);
   @apply flex flex-col;
-  width: min(390px, calc(100vw - 24px));
+  width: var(--tul-panel-width);
   height: var(--tul-panel-height);
   overflow: hidden;
   border: 0;
@@ -188,8 +188,8 @@
 
 .tul-message {
   display: grid;
-  grid-template-columns: 36px minmax(0, 1fr);
-  gap: 3px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  gap: 2px;
   padding: 3px 12px;
 }
 
@@ -309,6 +309,6 @@
 
 @media (max-width: 600px) {
   .tul-panel {
-    width: calc(100vw - 16px);
+    width: min(var(--tul-panel-width), calc(100vw - 16px));
   }
 }
