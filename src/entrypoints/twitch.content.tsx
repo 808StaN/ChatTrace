@@ -22,8 +22,11 @@ function TwitchLogsApp() {
 
     const closeWhenCardIsGone = () => {
       const style = window.getComputedStyle(anchor);
-      const isHidden = style.display === 'none' || style.visibility === 'hidden';
-      if (!anchor.isConnected || isHidden || anchor.closest('[aria-hidden="true"]')) {
+      const isHidden =
+        style.display === 'none' ||
+        style.visibility === 'hidden' ||
+        anchor.getClientRects().length === 0;
+      if (!anchor.isConnected || isHidden) {
         setContext((current) => (current?.anchor === anchor ? null : current));
       }
     };
