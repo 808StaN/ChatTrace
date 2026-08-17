@@ -40,6 +40,11 @@ function parseBadges(tags: JsonRecord | undefined): ChatBadge[] | undefined {
   });
 }
 
+function parseNameColor(tags: JsonRecord | undefined): string | undefined {
+  const color = tags ? getString(tags, 'color') : undefined;
+  return color && /^#[0-9a-f]{6}$/i.test(color) ? color : undefined;
+}
+
 function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
   if (!isRecord(raw)) {
     return null;
@@ -62,6 +67,7 @@ function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
     username,
     displayName:
       getString(raw, 'displayName') ?? (tags ? getString(tags, 'display-name') : undefined),
+    color: parseNameColor(tags),
     timestamp,
     text,
     badges: parseBadges(tags),

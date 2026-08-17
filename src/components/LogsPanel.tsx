@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useUserLogs } from '@/hooks/useUserLogs';
+import { useUserCardAnchor } from '@/hooks/useUserCardAnchor';
 import { filterMessages } from '@/utils/search';
 import { EmptyState } from './EmptyState';
 import { ErrorState } from './ErrorState';
@@ -11,20 +12,34 @@ import { LoadingState } from './LoadingState';
 interface LogsPanelProps {
   channel: string;
   username: string;
+  anchor: Element;
   onClose: () => void;
 }
 
-export function LogsPanel({ channel, username, onClose }: LogsPanelProps) {
+export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps) {
   const [query, setQuery] = useState('');
   const { messages, status, isLoadingOlder, canLoadOlder, retry, loadOlder } = useUserLogs(
     channel,
     username,
   );
   const filteredMessages = filterMessages(messages, query);
+  const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
+    useUserCardAnchor(anchor);
 
   return (
-    <aside className="tul-panel" aria-label={`Logs for ${username} in ${channel}`}>
-      <LogsHeader channel={channel} username={username} onClose={onClose} />
+    <aside
+      className="tul-panel"
+      style={panelStyle}
+      aria-label={`Logs for ${username} in ${channel}`}
+    >
+      <LogsHeader
+        channel={channel}
+        username={username}
+        onClose={onClose}
+        onPointerDown={onHeaderPointerDown}
+        onPointerMove={onHeaderPointerMove}
+        onPointerUp={onHeaderPointerUp}
+      />
       <LogsSearch query={query} onChange={setQuery} />
       <div className="tul-content">
         {status === 'loading' && <LoadingState />}

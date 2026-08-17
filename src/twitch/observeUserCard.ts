@@ -38,7 +38,7 @@ function getActionContainer(card: Element): Element {
 function injectLogsButton(
   card: Element,
   username: string,
-  onOpen: (username: string) => void,
+  onOpen: (username: string, card: Element) => void,
 ): void {
   if (card.querySelector(`[${BUTTON_ATTRIBUTE}]`)) {
     return;
@@ -52,13 +52,15 @@ function injectLogsButton(
   button.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
-    onOpen(username);
+    onOpen(username, card);
   });
 
   getActionContainer(card).append(button);
 }
 
-export function observeTwitchUserCards(onOpen: (username: string) => void): () => void {
+export function observeTwitchUserCards(
+  onOpen: (username: string, card: Element) => void,
+): () => void {
   let selectedUsername: string | null = null;
   let frameId: number | undefined;
 

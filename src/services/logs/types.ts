@@ -13,6 +13,7 @@ export interface ChatMessage {
   id?: string;
   username: string;
   displayName?: string;
+  color?: string;
   timestamp: Date;
   text: string;
   badges?: ChatBadge[];

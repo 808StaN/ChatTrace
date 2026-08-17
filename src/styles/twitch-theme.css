@@ -1,3 +1,5 @@
+@reference 'tailwindcss';
+
 #twitch-user-logs-extension-root {
   --logs-bg: #18181b;
   --logs-bg-secondary: #26262c;
@@ -24,13 +26,25 @@
 }
 
 .tul-card-button {
-  min-height: 30px;
-  padding: 0 12px;
-  border-radius: 4px;
+  display: inline-flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 13px;
+  border-radius: 16px;
   background: #9147ff;
   color: #fff;
-  font-size: 12px;
-  font-weight: 600;
+  font-family:
+    Inter,
+    Roobert,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
 }
 
 .tul-card-button:hover,
@@ -40,12 +54,12 @@
 
 .tul-panel {
   position: fixed;
-  top: 56px;
-  right: 12px;
-  bottom: 12px;
+  top: var(--tul-panel-top);
+  left: var(--tul-panel-left);
   z-index: 2147483647;
   @apply flex flex-col;
   width: min(390px, calc(100vw - 24px));
+  height: var(--tul-panel-height);
   overflow: hidden;
   border: 1px solid var(--logs-border);
   border-radius: 8px;
@@ -67,6 +81,13 @@
   justify-content: space-between;
   padding: 16px 16px 12px;
   border-bottom: 1px solid var(--logs-border);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.tul-header:active {
+  cursor: grabbing;
 }
 
 .tul-eyebrow,
@@ -181,9 +202,9 @@
 
 .tul-message {
   display: grid;
-  grid-template-columns: 50px minmax(0, 1fr);
-  gap: 8px;
-  padding: 4px 16px;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 6px;
+  padding: 3px 12px;
 }
 
 .tul-message:hover {
@@ -191,7 +212,7 @@
 }
 
 .tul-message-time {
-  padding-top: 1px;
+  padding-top: 2px;
   color: var(--logs-text-muted);
   font-size: 11px;
   line-height: 1.35;
@@ -201,9 +222,65 @@
 .tul-message-text {
   overflow-wrap: anywhere;
   color: var(--logs-text);
-  font-size: 13px;
-  line-height: 1.35;
+  font-size: 14px;
+  line-height: 1.4;
   white-space: pre-wrap;
+}
+
+.tul-message-body {
+  min-width: 0;
+}
+
+.tul-message-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-right: 4px;
+  vertical-align: baseline;
+}
+
+.tul-badge {
+  display: inline-flex;
+  height: 14px;
+  min-width: 14px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 2px;
+  border-radius: 2px;
+  background: #6d6d78;
+  color: #fff;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.tul-badge-broadcaster {
+  background: #e91916;
+}
+
+.tul-badge-moderator {
+  background: #00ad03;
+}
+
+.tul-badge-subscriber {
+  background: #9147ff;
+}
+
+.tul-badge-vip {
+  background: #e005b9;
+}
+
+.tul-message-author {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.tul-message-colon {
+  color: var(--logs-text);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .tul-state {
@@ -271,10 +348,6 @@
 
 @media (max-width: 600px) {
   .tul-panel {
-    top: 8px;
-    right: 8px;
-    bottom: 8px;
     width: calc(100vw - 16px);
   }
 }
-@reference 'tailwindcss';

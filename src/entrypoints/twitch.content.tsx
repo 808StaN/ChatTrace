@@ -6,6 +6,7 @@ import { observeTwitchUserCards } from '@/twitch/observeUserCard';
 import '@/styles/twitch-theme.css';
 
 interface LogsContext {
+  anchor: Element;
   channel: string;
   username: string;
 }
@@ -14,10 +15,10 @@ function TwitchLogsApp() {
   const [context, setContext] = useState<LogsContext | null>(null);
 
   useEffect(() => {
-    const stopUserCards = observeTwitchUserCards((username) => {
+    const stopUserCards = observeTwitchUserCards((username, anchor) => {
       const channel = getCurrentChannel();
       if (channel) {
-        setContext({ channel, username });
+        setContext({ anchor, channel, username });
       }
     });
     const stopChannelObserver = observeCurrentChannel((channel) => {
@@ -33,6 +34,7 @@ function TwitchLogsApp() {
   return context ? (
     <LogsPanel
       key={`${context.channel}:${context.username}`}
+      anchor={context.anchor}
       channel={context.channel}
       username={context.username}
       onClose={() => setContext(null)}
