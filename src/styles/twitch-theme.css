@@ -65,7 +65,7 @@
   border: 1px solid var(--logs-border);
   border-radius: 8px;
   background: var(--logs-bg);
-  box-shadow: 0 10px 30px rgb(0 0 0 / 45%);
+  box-shadow: 10px 8px 24px rgb(0 0 0 / 32%);
   color: var(--logs-text);
   font-family:
     Inter,
@@ -79,12 +79,12 @@
 .tul-panel[data-side='right'] {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
-  border-left: 0;
+  border-left-color: transparent;
 }
 
 .tul-panel[data-side='left'] {
   border-top-right-radius: 0;
-  border-right: 0;
+  border-right-color: transparent;
   border-bottom-right-radius: 0;
 }
 
@@ -116,7 +116,7 @@
 .tul-eyebrow,
 .tul-channel,
 .tul-day-group h3,
-.tul-message p {
+.tul-message-text {
   margin: 0;
 }
 
@@ -243,6 +243,7 @@
 }
 
 .tul-message-text {
+  display: inline;
   overflow-wrap: anywhere;
   color: var(--logs-text);
   font-size: 14px;

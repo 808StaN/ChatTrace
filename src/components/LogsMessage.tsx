@@ -19,7 +19,7 @@ export function LogsMessage({ message }: { message: ChatMessage }) {
         {formatMessageTime(message.timestamp)}
       </time>
       <div className="tul-message-body">
-        <div className="tul-message-meta">
+        <span className="tul-message-meta">
           {message.badges?.map((badge) => (
             <span
               key={`${badge.name}-${badge.version ?? ''}`}
@@ -33,8 +33,8 @@ export function LogsMessage({ message }: { message: ChatMessage }) {
             {message.displayName ?? message.username}
           </span>
           <span className="tul-message-colon">:</span>
-        </div>
-        <p className="tul-message-text">{message.text}</p>
+        </span>
+        <span className="tul-message-text">{message.text}</span>
       </div>
     </article>
   );

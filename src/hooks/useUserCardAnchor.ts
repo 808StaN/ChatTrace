@@ -19,12 +19,15 @@ function positionsMatch(left: PanelPosition, right: PanelPosition): boolean {
 
 const PANEL_WIDTH = 390;
 const VIEWPORT_GUTTER = 8;
-const CARD_GAP = 0;
+const CARD_GAP = -1;
 
 function getPanelPosition(anchor: Element): PanelPosition {
   const card = anchor.getBoundingClientRect();
   const availableHeight = window.innerHeight - VIEWPORT_GUTTER * 2;
-  const panelHeight = Math.max(240, Math.min(360, Math.round(availableHeight / 2)));
+  const panelHeight = Math.min(
+    Math.max(220, Math.round(card.height)),
+    Math.max(220, Math.round(availableHeight / 2)),
+  );
   const rightSideLeft = card.right + CARD_GAP;
   const leftSideLeft = card.left - PANEL_WIDTH - CARD_GAP;
   const fitsRight = rightSideLeft + PANEL_WIDTH <= window.innerWidth - VIEWPORT_GUTTER;

@@ -2,6 +2,8 @@ import { extractSelectedUsername, extractUsernameFromUserCard } from './getSelec
 import { TWITCH_SELECTORS } from './selectors';
 
 const BUTTON_ATTRIBUTE = 'data-twitch-user-logs-action';
+const USER_CARD_SURFACE =
+  '[data-a-target="user-card"], [data-a-target="viewer-card"], [data-test-selector*="user-card"]';
 
 function isLikelyUserCard(card: Element, username: string): boolean {
   if (isExplicitUserCard(card)) {
@@ -14,8 +16,12 @@ function isLikelyUserCard(card: Element, username: string): boolean {
 function isExplicitUserCard(card: Element): boolean {
   return (
     ['user-card', 'viewer-card'].includes(card.getAttribute('data-a-target') ?? '') ||
-    Boolean(card.querySelector('[data-a-target="user-card"], [data-a-target="viewer-card"]'))
+    Boolean(card.querySelector(USER_CARD_SURFACE))
   );
+}
+
+function getVisibleCardSurface(card: Element): Element {
+  return card.matches(USER_CARD_SURFACE) ? card : (card.querySelector(USER_CARD_SURFACE) ?? card);
 }
 
 function getActionContainer(card: Element): Element {
@@ -52,7 +58,7 @@ function injectLogsButton(
   button.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
-    onOpen(username, card);
+    onOpen(username, getVisibleCardSurface(card));
   });
 
   getActionContainer(card).append(button);
