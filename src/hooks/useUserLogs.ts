@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SupaLogsProvider } from '@/services/logs';
 import type { AvailableLogDate, ChatMessage } from '@/services/logs';
 import type { LogsProviderError } from '@/services/logs/types';
+import { getOlderPageRequest } from '@/utils/pagination';
 
 type LoadStatus = 'idle' | 'loading' | 'ready' | 'empty' | 'error' | 'rate-limited';
 
@@ -15,6 +16,7 @@ interface UserLogsState {
 }
 
 const PAGE_SIZE = 50;
+const MAX_LOADED_MESSAGES = 2_000;
 
 function appendUniqueMessages(existing: ChatMessage[], incoming: ChatMessage[]): ChatMessage[] {
   const knownIds = new Set(existing.map((message) => message.id ?? `${message.timestamp.valueOf()}:${message.text}`));
@@ -118,14 +120,8 @@ export function useUserLogs(channel: string | null, username: string | null): Us
       return;
     }
 
-    const currentPeriod = availableDates[periodIndex];
-    if (!currentPeriod) {
-      return;
-    }
-
-    const targetPeriodIndex = nextOffset === undefined ? periodIndex + 1 : periodIndex;
-    const targetPeriod = availableDates[targetPeriodIndex];
-    if (!targetPeriod) {
+    const request = getOlderPageRequest(availableDates, periodIndex, nextOffset);
+    if (!request) {
       return;
     }
 
@@ -136,9 +132,9 @@ export function useUserLogs(channel: string | null, username: string | null): Us
     setIsLoadingOlder(true);
     void provider
       .getMessages(channel, username, {
-        period: targetPeriod,
-        limit: PAGE_SIZE,
-        offset: targetPeriodIndex === periodIndex ? nextOffset : undefined,
+        period: request.period,
+        limit: Math.min(PAGE_SIZE, MAX_LOADED_MESSAGES - messages.length),
+        offset: request.offset,
         signal: controller.signal,
       })
       .then((page) => {
@@ -146,7 +142,7 @@ export function useUserLogs(channel: string | null, username: string | null): Us
           return;
         }
         setMessages((current) => appendUniqueMessages(current, page.messages));
-        setPeriodIndex(targetPeriodIndex);
+        setPeriodIndex(request.periodIndex);
         setNextOffset(page.nextOffset);
       })
       .catch((error: unknown) => {
@@ -162,13 +158,15 @@ export function useUserLogs(channel: string | null, username: string | null): Us
           setIsLoadingOlder(false);
         }
       });
-  }, [availableDates, channel, isLoadingOlder, nextOffset, periodIndex, provider, status, username]);
+  }, [availableDates, channel, isLoadingOlder, messages.length, nextOffset, periodIndex, provider, status, username]);
 
   return {
     messages,
     status,
     isLoadingOlder,
-    canLoadOlder: nextOffset !== undefined || periodIndex + 1 < availableDates.length,
+    canLoadOlder:
+      messages.length < MAX_LOADED_MESSAGES &&
+      (nextOffset !== undefined || periodIndex + 1 < availableDates.length),
     retry,
     loadOlder,
   };
