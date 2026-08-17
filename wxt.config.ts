@@ -9,7 +9,7 @@ export default defineConfig({
     host_permissions: [
       'https://www.twitch.tv/*',
       'https://logs.zonian.dev/*',
-      'https://badges.twitch.tv/*',
+      'https://api.ivr.fi/*',
     ],
   },
   vite: () => ({
