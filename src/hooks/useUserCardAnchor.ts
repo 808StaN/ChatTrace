@@ -82,7 +82,6 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
     anchorRef.current = anchor;
     const anchorElement = anchorRef.current as HTMLElement;
     const panelElement = panelRef.current;
-    const originalTranslate = anchorElement.style.translate;
     let frameId: number | undefined;
     let trackingFrameId: number | undefined;
     let previousPosition = getPanelPosition(anchorElement);
@@ -133,7 +132,6 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
         window.cancelAnimationFrame(dragFrameId.current);
       }
       panelElement?.style.removeProperty('transform');
-      anchorElement.style.translate = originalTranslate;
     };
   }, [anchor, panelRef]);
 
