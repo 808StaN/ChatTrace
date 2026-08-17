@@ -9,6 +9,12 @@ export interface ChatBadge {
   version?: string;
 }
 
+export interface ChatEmote {
+  id: string;
+  start: number;
+  end: number;
+}
+
 export interface ChatMessage {
   id?: string;
   username: string;
@@ -18,6 +24,7 @@ export interface ChatMessage {
   timestamp: Date;
   text: string;
   badges?: ChatBadge[];
+  emotes?: ChatEmote[];
   raw?: unknown;
 }
 

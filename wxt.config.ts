@@ -10,6 +10,9 @@ export default defineConfig({
       'https://www.twitch.tv/*',
       'https://logs.zonian.dev/*',
       'https://api.ivr.fi/*',
+      'https://7tv.io/*',
+      'https://api.betterttv.net/*',
+      'https://api.frankerfacez.com/*',
     ],
   },
   vite: () => ({

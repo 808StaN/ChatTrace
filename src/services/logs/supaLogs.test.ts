@@ -17,7 +17,12 @@ describe('normalizeSupaMessages', () => {
             id: 'newer',
             text: 'second',
             timestamp: '2026-08-16T18:42:00.000Z',
-            tags: { 'display-name': 'Viewer', badges: 'moderator/1', color: '#00FF00' },
+            tags: {
+              'display-name': 'Viewer',
+              badges: 'moderator/1',
+              color: '#00FF00',
+              emotes: '25:0-4',
+            },
           },
         ],
       },
@@ -31,6 +36,7 @@ describe('normalizeSupaMessages', () => {
       text: 'second',
       badges: [{ name: 'moderator', version: '1' }],
       color: '#00FF00',
+      emotes: [{ id: '25', start: 0, end: 4 }],
     });
   });
 

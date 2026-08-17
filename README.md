@@ -73,4 +73,4 @@ No account, analytics, tracking, Twitch bot, database, crawler, or chat logger i
 - Logs only exist where Supa's current logs infrastructure has coverage.
 - Twitch DOM changes can temporarily affect detection of chat usernames or the user-card action.
 - Removed, private, or never-recorded messages cannot be recovered.
-- MVP rendering is plain text; Twitch, 7TV, BTTV, and FFZ emotes are intentionally not resolved yet.
+- Twitch, 7TV, BetterTTV, and FrankerFaceZ emotes are resolved from their public catalogs. Removed or unavailable catalog entries remain plain text.

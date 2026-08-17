@@ -1,14 +1,17 @@
 import type { ChatMessage } from '@/services/logs';
 import type { BadgeImageLookup } from '@/services/twitchBadges';
+import type { ExternalEmoteLookup } from '@/services/emotes/types';
 import { dayLabel, groupMessagesByDay } from '@/utils/dates';
 import { LogsMessage } from './LogsMessage';
 
 export function LogsList({
   messages,
   badgeImages,
+  externalEmotes,
 }: {
   messages: ChatMessage[];
   badgeImages: BadgeImageLookup;
+  externalEmotes: ExternalEmoteLookup;
 }) {
   return (
     <div className="tul-list">
@@ -20,6 +23,7 @@ export function LogsList({
               key={message.id ?? `${message.timestamp.valueOf()}-${index}`}
               message={message}
               badgeImages={badgeImages}
+              externalEmotes={externalEmotes}
             />
           ))}
         </section>

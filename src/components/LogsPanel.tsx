@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useUserLogs } from '@/hooks/useUserLogs';
 import { useUserCardAnchor } from '@/hooks/useUserCardAnchor';
 import { useTwitchBadges } from '@/hooks/useTwitchBadges';
+import { useChatEmotes } from '@/hooks/useChatEmotes';
 import { filterMessages } from '@/utils/search';
 import { EmptyState } from './EmptyState';
 import { ErrorState } from './ErrorState';
@@ -25,6 +26,7 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
   );
   const filteredMessages = filterMessages(messages, query);
   const badgeImages = useTwitchBadges(messages);
+  const externalEmotes = useChatEmotes(messages);
   const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
     useUserCardAnchor(anchor);
 
@@ -53,7 +55,11 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
           <EmptyState>No loaded messages match your search.</EmptyState>
         )}
         {status === 'ready' && filteredMessages.length > 0 && (
-          <LogsList messages={filteredMessages} badgeImages={badgeImages} />
+          <LogsList
+            messages={filteredMessages}
+            badgeImages={badgeImages}
+            externalEmotes={externalEmotes}
+          />
         )}
         {status === 'ready' && canLoadOlder && (
           <button

@@ -1,6 +1,7 @@
 import {
   type AvailableLogDate,
   type ChatBadge,
+  type ChatEmote,
   type ChatMessage,
   type ChatMessagePage,
   type GetMessagesOptions,
@@ -45,6 +46,33 @@ function parseNameColor(tags: JsonRecord | undefined): string | undefined {
   return color && /^#[0-9a-f]{6}$/i.test(color) ? color : undefined;
 }
 
+function parseTwitchEmotes(tags: JsonRecord | undefined): ChatEmote[] | undefined {
+  const serializedEmotes = tags ? getString(tags, 'emotes') : undefined;
+  if (!serializedEmotes) {
+    return undefined;
+  }
+
+  const emotes = serializedEmotes.split('/').flatMap((entry) => {
+    const [id, serializedRanges] = entry.split(':');
+    if (!id || !serializedRanges) {
+      return [];
+    }
+    return serializedRanges.split(',').flatMap((range) => {
+      const [startValue, endValue] = range.split('-');
+      if (startValue === undefined || endValue === undefined) {
+        return [];
+      }
+      const start = Number(startValue);
+      const end = Number(endValue);
+      if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end < start) {
+        return [];
+      }
+      return [{ id, start, end }];
+    });
+  });
+  return emotes.length > 0 ? emotes.sort((left, right) => left.start - right.start) : undefined;
+}
+
 function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
   if (!isRecord(raw)) {
     return null;
@@ -72,6 +100,7 @@ function normalizeMessage(raw: unknown, username: string): ChatMessage | null {
     timestamp,
     text,
     badges: parseBadges(tags),
+    emotes: parseTwitchEmotes(tags),
     raw,
   };
 }

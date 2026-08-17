@@ -214,6 +214,15 @@
   white-space: pre-wrap;
 }
 
+.tul-inline-emote {
+  width: auto;
+  height: 28px;
+  max-width: 112px;
+  margin: 0 1px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
 .tul-message-body {
   min-width: 0;
 }
