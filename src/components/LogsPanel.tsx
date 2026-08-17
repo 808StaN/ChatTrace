@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useUserLogs } from '@/hooks/useUserLogs';
 import { useUserCardAnchor } from '@/hooks/useUserCardAnchor';
 import { useTwitchBadges } from '@/hooks/useTwitchBadges';
@@ -27,12 +27,14 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
   const filteredMessages = filterMessages(messages, query);
   const badgeImages = useTwitchBadges(messages);
   const externalEmotes = useChatEmotes(messages);
+  const panelRef = useRef<HTMLElement>(null);
   const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
-    useUserCardAnchor(anchor);
+    useUserCardAnchor(anchor, panelRef);
 
   return (
     <aside
       className="tul-panel"
+      ref={panelRef}
       style={panelStyle}
       aria-label={`Logs for ${username} in ${channel}`}
     >
