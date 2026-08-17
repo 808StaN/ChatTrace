@@ -15,6 +15,25 @@ function TwitchLogsApp() {
   const [context, setContext] = useState<LogsContext | null>(null);
 
   useEffect(() => {
+    const anchor = context?.anchor;
+    if (!anchor) {
+      return;
+    }
+
+    const closeWhenCardIsGone = () => {
+      const style = window.getComputedStyle(anchor);
+      const isHidden = style.display === 'none' || style.visibility === 'hidden';
+      if (!anchor.isConnected || isHidden || anchor.closest('[aria-hidden="true"]')) {
+        setContext((current) => (current?.anchor === anchor ? null : current));
+      }
+    };
+
+    const observer = new MutationObserver(closeWhenCardIsGone);
+    observer.observe(document.body, { attributes: true, childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [context?.anchor]);
+
+  useEffect(() => {
     const stopUserCards = observeTwitchUserCards((username, anchor) => {
       const channel = getCurrentChannel();
       if (channel) {

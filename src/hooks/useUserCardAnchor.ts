@@ -22,10 +22,8 @@ function getPanelPosition(anchor: Element): PanelPosition {
     Math.max(220, Math.round(card.height)),
     Math.max(220, Math.round(availableHeight / 2)),
   );
-  const rightSideLeft = card.right + CARD_GAP;
   const leftSideLeft = card.left - PANEL_WIDTH - CARD_GAP;
-  const fitsRight = rightSideLeft + PANEL_WIDTH <= window.innerWidth - VIEWPORT_GUTTER;
-  const left = fitsRight ? rightSideLeft : Math.max(VIEWPORT_GUTTER, leftSideLeft);
+  const left = Math.max(VIEWPORT_GUTTER, leftSideLeft);
   const top = Math.min(
     Math.max(VIEWPORT_GUTTER, card.top),
     window.innerHeight - panelHeight - VIEWPORT_GUTTER,
