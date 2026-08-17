@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   srcDir: 'src',
   manifest: {
-    name: 'Twitch User Logs',
-    description: 'View existing Supa Logs history for Twitch chatters.',
+    name: 'ChatTrace - Chat History for Twitch',
+    description: "View your own or other Twitch users' chat history directly on Twitch. Click a chatter and open logs to browse past messages.",
     icons: {
       16: 'icon.png',
       32: 'icon.png',
