@@ -1,8 +1,8 @@
 {
-  "name": "twitch-user-logs",
+  "name": "chattrace-twitch-chat-history",
   "version": "0.1.0",
   "private": true,
-  "description": "View a Twitch chatter's Supa Logs history without leaving Twitch.",
+  "description": "View your own or other Twitch users' chat history directly on Twitch. Click a chatter and open logs to browse past messages.",
   "type": "module",
   "scripts": {
     "dev": "wxt",

@@ -5,7 +5,8 @@ export default defineConfig({
   srcDir: 'src',
   manifest: {
     name: 'ChatTrace - Chat History for Twitch',
-    description: "View your own or other Twitch users' chat history directly on Twitch. Click a chatter and open logs to browse past messages.",
+    description:
+      "View your own or other Twitch users' chat history directly on Twitch. Click a chatter and open logs to browse past messages.",
     icons: {
       16: 'icon.png',
       32: 'icon.png',

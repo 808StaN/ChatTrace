@@ -1,6 +1,6 @@
-# Twitch User Logs
+# ChatTrace - Chat History for Twitch
 
-Click a Twitch chatter in stream chat, choose **Logs** from their normal Twitch user card, and view that user's existing chat history for the currently viewed channel without leaving Twitch.
+View your own or other Twitch users' chat history directly on Twitch. Click a chatter, choose **Logs** from their normal Twitch user card, and browse past messages without leaving Twitch.
 
 ## Stack
 
@@ -67,6 +67,8 @@ The extension talks only to the endpoint used by Supa's current client. It does 
 ## Privacy
 
 No account, analytics, tracking, Twitch bot, database, crawler, or chat logger is included. The extension reads only the current Twitch channel and the selected chatter username, then requests matching existing logs. It retains a short-lived in-memory cache while the page is open and caps the visible loaded history at 2,000 messages.
+
+The publishable policy is in [`privacy-policy.html`](privacy-policy.html). It must be hosted at a public HTTPS URL before submitting to the Chrome Web Store.
 
 ## Limitations
 
