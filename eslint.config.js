@@ -15,7 +15,10 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      // WXT entrypoints export their content-script definition beside the root component.
+      'react-refresh/only-export-components': 'off',
+      // Network lifecycle effects intentionally reset stale UI before issuing a new request.
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 );
