@@ -8,11 +8,7 @@ interface PanelPosition {
 }
 
 function positionsMatch(left: PanelPosition, right: PanelPosition): boolean {
-  return (
-    left.height === right.height &&
-    left.left === right.left &&
-    left.top === right.top
-  );
+  return left.height === right.height && left.left === right.left && left.top === right.top;
 }
 
 const PANEL_WIDTH = 390;
