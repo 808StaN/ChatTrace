@@ -62,10 +62,10 @@
   width: min(390px, calc(100vw - 24px));
   height: var(--tul-panel-height);
   overflow: hidden;
-  border: 1px solid var(--logs-border);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
   background: var(--logs-bg);
-  box-shadow: 10px 8px 24px rgb(0 0 0 / 32%);
+  box-shadow: none;
   color: var(--logs-text);
   font-family:
     Inter,
@@ -74,28 +74,6 @@
     Helvetica,
     Arial,
     sans-serif;
-}
-
-.tul-panel[data-side='right'] {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-left-color: transparent;
-}
-
-.tul-panel[data-side='left'] {
-  border-top-right-radius: 0;
-  border-right-color: transparent;
-  border-bottom-right-radius: 0;
-}
-
-[data-twitch-user-logs-anchor='right'] {
-  border-top-right-radius: 0 !important;
-  border-bottom-right-radius: 0 !important;
-}
-
-[data-twitch-user-logs-anchor='left'] {
-  border-top-left-radius: 0 !important;
-  border-bottom-left-radius: 0 !important;
 }
 
 .tul-header {

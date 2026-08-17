@@ -23,14 +23,13 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
     username,
   );
   const filteredMessages = filterMessages(messages, query);
-  const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle, side } =
+  const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
     useUserCardAnchor(anchor);
 
   return (
     <aside
       className="tul-panel"
       style={panelStyle}
-      data-side={side}
       aria-label={`Logs for ${username} in ${channel}`}
     >
       <LogsHeader
