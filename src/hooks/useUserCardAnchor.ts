@@ -36,7 +36,7 @@ function getCardZIndex(anchor: Element): number {
 
 function getPanelPosition(anchor: Element): PanelPosition {
   const card = anchor.getBoundingClientRect();
-  const panelHeight = Math.round(card.height * 2);
+  const panelHeight = Math.round(card.height * 1.75);
   const panelWidth = Math.round(card.width);
   const leftSideLeft = card.left - panelWidth - CARD_GAP;
   const left = Math.max(VIEWPORT_GUTTER, leftSideLeft);
