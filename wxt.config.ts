@@ -6,6 +6,12 @@ export default defineConfig({
   manifest: {
     name: 'Twitch User Logs',
     description: 'View existing Supa Logs history for Twitch chatters.',
+    icons: {
+      16: 'icon.png',
+      32: 'icon.png',
+      48: 'icon.png',
+      128: 'icon.png',
+    },
     host_permissions: [
       'https://www.twitch.tv/*',
       'https://logs.zonian.dev/*',
