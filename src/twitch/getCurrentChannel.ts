@@ -15,7 +15,7 @@ const RESERVED_ROUTES = new Set([
   'wallet',
 ]);
 
-const CHANNEL_LOGIN = /^[a-z0-9_]{4,25}$/i;
+const CHANNEL_LOGIN = /^[a-z0-9_]{3,25}$/i;
 
 export function getCurrentChannel(url: string = window.location.href): string | null {
   let parsedUrl: URL;
