@@ -20,19 +20,25 @@ export function extractSelectedUsername(target: EventTarget | null): string | nu
     return null;
   }
 
-  const userElement = target.closest<HTMLElement>('[data-a-user]');
-  const fromDataAttribute = normalizeLogin(userElement?.dataset.aUser);
+  const userElement = target.closest<HTMLElement>(
+    '[data-a-user], [data-a-target="chat-message-username"], .chat-author__display-name',
+  );
+  const fromDataAttribute = normalizeLogin(
+    userElement?.dataset.aUser ?? userElement?.dataset.aUserLogin,
+  );
   if (fromDataAttribute) {
     return fromDataAttribute;
   }
 
-  const profileLink = target.closest<HTMLAnchorElement>('a[href]');
+  const profileLink =
+    userElement?.closest<HTMLAnchorElement>('a[href]') ??
+    target.closest<HTMLAnchorElement>('a[href]');
   const fromProfileLink = profileLink ? usernameFromHref(profileLink.href) : null;
   if (fromProfileLink) {
     return fromProfileLink;
   }
 
-  return normalizeLogin(userElement?.textContent ?? undefined);
+  return normalizeLogin(userElement?.textContent ?? target.textContent ?? undefined);
 }
 
 export function extractUsernameFromUserCard(card: Element): string | null {
@@ -49,5 +55,8 @@ export function extractUsernameFromUserCard(card: Element): string | null {
     }
   }
 
-  return null;
+  const cardName = card.querySelector<HTMLElement>(
+    '[data-a-target="user-card-name"], [data-test-selector="user-card-name"], h1, h2',
+  );
+  return normalizeLogin(cardName?.textContent ?? undefined);
 }

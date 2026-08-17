@@ -4,14 +4,42 @@ import { TWITCH_SELECTORS } from './selectors';
 const BUTTON_ATTRIBUTE = 'data-twitch-user-logs-action';
 
 function isLikelyUserCard(card: Element, username: string): boolean {
-  if (card.getAttribute('data-a-target') === 'user-card' || card.querySelector('[data-a-target="user-card"]')) {
+  if (isExplicitUserCard(card)) {
     return true;
   }
 
   return extractUsernameFromUserCard(card) === username;
 }
 
-function injectLogsButton(card: Element, username: string, onOpen: (username: string) => void): void {
+function isExplicitUserCard(card: Element): boolean {
+  return (
+    ['user-card', 'viewer-card'].includes(card.getAttribute('data-a-target') ?? '') ||
+    Boolean(card.querySelector('[data-a-target="user-card"], [data-a-target="viewer-card"]'))
+  );
+}
+
+function getActionContainer(card: Element): Element {
+  const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
+  if (actionArea) {
+    return actionArea;
+  }
+
+  const followAction = card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction);
+  if (followAction?.parentElement) {
+    return followAction.parentElement;
+  }
+
+  const localizedFollowAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
+    (button) => /^(follow|obserwuj)$/i.test(button.textContent?.trim() ?? ''),
+  );
+  return localizedFollowAction?.parentElement ?? card;
+}
+
+function injectLogsButton(
+  card: Element,
+  username: string,
+  onOpen: (username: string) => void,
+): void {
   if (card.querySelector(`[${BUTTON_ATTRIBUTE}]`)) {
     return;
   }
@@ -27,10 +55,7 @@ function injectLogsButton(card: Element, username: string, onOpen: (username: st
     onOpen(username);
   });
 
-  const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
-  const existingButton = card.querySelector('button');
-  const container = actionArea ?? existingButton?.parentElement ?? card;
-  container.append(button);
+  getActionContainer(card).append(button);
 }
 
 export function observeTwitchUserCards(onOpen: (username: string) => void): () => void {
@@ -39,13 +64,15 @@ export function observeTwitchUserCards(onOpen: (username: string) => void): () =
 
   const scanCards = () => {
     frameId = undefined;
-    if (!selectedUsername) {
-      return;
-    }
-
     for (const card of document.querySelectorAll(TWITCH_SELECTORS.userCard)) {
-      if (isLikelyUserCard(card, selectedUsername)) {
+      if (selectedUsername && isLikelyUserCard(card, selectedUsername)) {
         injectLogsButton(card, selectedUsername, onOpen);
+        continue;
+      }
+
+      const cardUsername = extractUsernameFromUserCard(card);
+      if (cardUsername && isExplicitUserCard(card)) {
+        injectLogsButton(card, cardUsername, onOpen);
       }
     }
   };
@@ -61,11 +88,15 @@ export function observeTwitchUserCards(onOpen: (username: string) => void): () =
       return;
     }
 
-    if (!(event.target instanceof Element) || !event.target.closest(TWITCH_SELECTORS.chatUsername)) {
+    if (
+      !(event.target instanceof Element) ||
+      !event.target.closest(TWITCH_SELECTORS.chatUsername)
+    ) {
       return;
     }
 
-    const username = extractSelectedUsername(event.target);
+    const chatUsernameElement = event.target.closest(TWITCH_SELECTORS.chatUsername);
+    const username = extractSelectedUsername(chatUsernameElement);
     if (username) {
       selectedUsername = username;
       scheduleScan();
