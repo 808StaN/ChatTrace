@@ -62,7 +62,7 @@
   height: var(--tul-panel-height);
   overflow: hidden;
   border: 0;
-  border-radius: 0;
+  border-radius: 0.4rem 0 0.4rem 0.4rem;
   background: var(--logs-bg);
   box-shadow: none;
   color: var(--logs-text);
