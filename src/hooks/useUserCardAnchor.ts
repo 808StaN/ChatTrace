@@ -7,6 +7,10 @@ interface PanelPosition {
   top: number;
 }
 
+function positionsMatch(left: PanelPosition, right: PanelPosition): boolean {
+  return left.height === right.height && left.left === right.left && left.top === right.top;
+}
+
 const PANEL_WIDTH = 390;
 const VIEWPORT_GUTTER = 8;
 const CARD_GAP = 8;
@@ -45,9 +49,15 @@ export function useUserCardAnchor(anchor: Element) {
     const anchorElement = anchorRef.current as HTMLElement;
     const originalTranslate = anchorElement.style.translate;
     let frameId: number | undefined;
+    let trackingFrameId: number | undefined;
+    let previousPosition = getPanelPosition(anchorElement);
     const updatePosition = () => {
       frameId = undefined;
-      setPosition(getPanelPosition(anchorElement));
+      const nextPosition = getPanelPosition(anchorElement);
+      if (!positionsMatch(previousPosition, nextPosition)) {
+        previousPosition = nextPosition;
+        setPosition(nextPosition);
+      }
     };
     const schedulePositionUpdate = () => {
       if (frameId === undefined) {
@@ -63,6 +73,13 @@ export function useUserCardAnchor(anchor: Element) {
     window.addEventListener('scroll', schedulePositionUpdate, true);
     schedulePositionUpdate();
 
+    // Twitch can move viewer cards by updating an ancestor's transform without a DOM mutation.
+    const trackCardPosition = () => {
+      updatePosition();
+      trackingFrameId = window.requestAnimationFrame(trackCardPosition);
+    };
+    trackingFrameId = window.requestAnimationFrame(trackCardPosition);
+
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
@@ -70,6 +87,9 @@ export function useUserCardAnchor(anchor: Element) {
       window.removeEventListener('scroll', schedulePositionUpdate, true);
       if (frameId !== undefined) {
         window.cancelAnimationFrame(frameId);
+      }
+      if (trackingFrameId !== undefined) {
+        window.cancelAnimationFrame(trackingFrameId);
       }
       anchorElement.style.translate = originalTranslate;
     };
