@@ -195,6 +195,7 @@
 .tul-message {
   display: grid;
   grid-template-columns: minmax(34px, auto) minmax(0, 1fr);
+  align-items: start;
   gap: 6px;
   padding: 3px 12px;
 }
@@ -204,7 +205,6 @@
 }
 
 .tul-message-time {
-  padding-top: 1px;
   color: var(--logs-text-muted);
   font-size: 11px;
   line-height: 1.35;
@@ -230,6 +230,8 @@
 }
 
 .tul-message-body {
+  position: relative;
+  top: -1px;
   min-width: 0;
 }
 
@@ -244,7 +246,7 @@
   height: 18px;
   margin-right: 3px;
   object-fit: contain;
-  vertical-align: -4px;
+  vertical-align: -2px;
 }
 
 .tul-message-author {
