@@ -28,14 +28,14 @@
 .tul-card-button {
   box-sizing: border-box;
   display: inline-flex;
-  height: 30px;
+  height: 32px;
   flex-shrink: 0;
   align-self: end;
   align-items: center;
   justify-content: center;
   padding: 0 16px;
   margin-left: 0;
-  border-radius: 15px;
+  border-radius: 16px;
   background: #9147ff;
   color: #fff;
   font-family:
