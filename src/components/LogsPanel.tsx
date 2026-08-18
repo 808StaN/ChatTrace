@@ -30,53 +30,57 @@ export function LogsPanel({ channel, username, anchor, locale, onClose }: LogsPa
   const badgeImages = useTwitchBadges(messages);
   const externalEmotes = useChatEmotes(messages);
   const panelRef = useRef<HTMLElement>(null);
+  const dragShieldRef = useRef<HTMLDivElement>(null);
   const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
-    useUserCardAnchor(anchor, panelRef);
+    useUserCardAnchor(anchor, panelRef, dragShieldRef);
   const t = getMessages(locale);
 
   return (
-    <aside
-      className="tul-panel"
-      ref={panelRef}
-      style={panelStyle}
-      aria-label={t.panelAriaLabel(username, channel)}
-    >
-      <LogsHeader
-        locale={locale}
-        onClose={onClose}
-        onPointerDown={onHeaderPointerDown}
-        onPointerMove={onHeaderPointerMove}
-        onPointerUp={onHeaderPointerUp}
-      />
-      <LogsSearch query={query} onChange={setQuery} locale={locale} />
-      <div className="tul-content">
-        {status === 'loading' && <LoadingState label={t.loading} />}
-        {status === 'empty' && <EmptyState>{t.noLogs}</EmptyState>}
-        {(status === 'error' || status === 'rate-limited') && (
-          <ErrorState rateLimited={status === 'rate-limited'} onRetry={retry} locale={locale} />
-        )}
-        {status === 'ready' && filteredMessages.length === 0 && (
-          <EmptyState>{t.noSearchResults}</EmptyState>
-        )}
-        {status === 'ready' && filteredMessages.length > 0 && (
-          <LogsList
-            messages={filteredMessages}
-            badgeImages={badgeImages}
-            externalEmotes={externalEmotes}
-            locale={locale}
-          />
-        )}
-        {status === 'ready' && canLoadOlder && (
-          <button
-            className="tul-load-button"
-            type="button"
-            disabled={isLoadingOlder}
-            onClick={loadOlder}
-          >
-            {isLoadingOlder ? t.loading : t.loadOlder}
-          </button>
-        )}
-      </div>
-    </aside>
+    <>
+      <div className="tul-drag-shield" ref={dragShieldRef} aria-hidden="true" />
+      <aside
+        className="tul-panel"
+        ref={panelRef}
+        style={panelStyle}
+        aria-label={t.panelAriaLabel(username, channel)}
+      >
+        <LogsHeader
+          locale={locale}
+          onClose={onClose}
+          onPointerDown={onHeaderPointerDown}
+          onPointerMove={onHeaderPointerMove}
+          onPointerUp={onHeaderPointerUp}
+        />
+        <LogsSearch query={query} onChange={setQuery} locale={locale} />
+        <div className="tul-content">
+          {status === 'loading' && <LoadingState label={t.loading} />}
+          {status === 'empty' && <EmptyState>{t.noLogs}</EmptyState>}
+          {(status === 'error' || status === 'rate-limited') && (
+            <ErrorState rateLimited={status === 'rate-limited'} onRetry={retry} locale={locale} />
+          )}
+          {status === 'ready' && filteredMessages.length === 0 && (
+            <EmptyState>{t.noSearchResults}</EmptyState>
+          )}
+          {status === 'ready' && filteredMessages.length > 0 && (
+            <LogsList
+              messages={filteredMessages}
+              badgeImages={badgeImages}
+              externalEmotes={externalEmotes}
+              locale={locale}
+            />
+          )}
+          {status === 'ready' && canLoadOlder && (
+            <button
+              className="tul-load-button"
+              type="button"
+              disabled={isLoadingOlder}
+              onClick={loadOlder}
+            >
+              {isLoadingOlder ? t.loading : t.loadOlder}
+            </button>
+          )}
+        </div>
+      </aside>
+    </>
   );
 }

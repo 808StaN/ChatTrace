@@ -45,7 +45,11 @@ function getPanelPosition(anchor: Element): PanelPosition {
   return { height: panelHeight, left, top, width: panelWidth, zIndex: getCardZIndex(anchor) };
 }
 
-export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLElement | null>) {
+export function useUserCardAnchor(
+  anchor: Element,
+  panelRef: RefObject<HTMLElement | null>,
+  dragShieldRef: RefObject<HTMLElement | null>,
+) {
   const [position, setPosition] = useState<PanelPosition>(() => getPanelPosition(anchor));
   const anchorRef = useRef(anchor);
   const drag = useRef<{
@@ -69,7 +73,14 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
     const anchorElement = anchorRef.current as HTMLElement;
     anchorElement.style.translate = `${activeDrag.translateX + delta.x}px ${activeDrag.translateY + delta.y}px`;
     panelRef.current?.style.setProperty('transform', `translate3d(${delta.x}px, ${delta.y}px, 0)`);
-  }, [panelRef]);
+    const cardBounds = anchorElement.getBoundingClientRect();
+    const shield = dragShieldRef.current;
+    if (shield) {
+      shield.style.left = `${cardBounds.right}px`;
+      shield.style.top = `${cardBounds.top}px`;
+      shield.style.height = `${cardBounds.height}px`;
+    }
+  }, [dragShieldRef, panelRef]);
 
   useLayoutEffect(() => {
     if (shouldClearPanelTransform.current) {
@@ -85,8 +96,20 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
     let frameId: number | undefined;
     let trackingFrameId: number | undefined;
     let previousPosition = getPanelPosition(anchorElement);
+    const syncDragShield = () => {
+      const shield = dragShieldRef.current;
+      if (!shield) {
+        return;
+      }
+      const cardBounds = anchorElement.getBoundingClientRect();
+      shield.style.left = `${cardBounds.right}px`;
+      shield.style.top = `${cardBounds.top}px`;
+      shield.style.height = `${cardBounds.height}px`;
+      shield.style.zIndex = String(getCardZIndex(anchorElement) + 1);
+    };
     const updatePosition = () => {
       frameId = undefined;
+      syncDragShield();
       if (drag.current) {
         return;
       }
@@ -117,42 +140,35 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
     };
     trackingFrameId = window.requestAnimationFrame(trackCardPosition);
 
-    const stopOversizedCardDrag = (event: PointerEvent | MouseEvent) => {
-      if (event.button !== 0 || !(event.target instanceof Element)) {
+    const updateDragShield = (event: PointerEvent) => {
+      const shield = dragShieldRef.current;
+      if (!shield) {
         return;
       }
 
-      const cardBounds = anchorElement.getBoundingClientRect();
-      const isInsideVisibleCard =
-        event.clientX >= cardBounds.left &&
-        event.clientX <= cardBounds.right &&
-        event.clientY >= cardBounds.top &&
-        event.clientY <= cardBounds.bottom;
-      const isRightOfCard = event.clientX > cardBounds.right;
-      const isWithinCardHeight =
-        event.clientY >= cardBounds.top && event.clientY <= cardBounds.bottom;
-      const cursor = window.getComputedStyle(event.target).cursor;
-      if (
-        isInsideVisibleCard ||
-        !isRightOfCard ||
-        !isWithinCardHeight ||
-        (cursor !== 'grab' && cursor !== 'grabbing')
-      ) {
-        return;
-      }
-
+      shield.style.pointerEvents = 'none';
+      const target = document.elementFromPoint(event.clientX, event.clientY);
+      const cursor = target ? window.getComputedStyle(target).cursor : '';
+      shield.style.pointerEvents = cursor === 'grab' || cursor === 'grabbing' ? 'auto' : 'none';
+    };
+    const blockShieldDrag = (event: Event) => {
+      event.preventDefault();
       event.stopImmediatePropagation();
     };
-    window.addEventListener('pointerdown', stopOversizedCardDrag, true);
-    window.addEventListener('mousedown', stopOversizedCardDrag, true);
+    const shield = dragShieldRef.current;
+    shield?.addEventListener('pointerdown', blockShieldDrag, true);
+    shield?.addEventListener('mousedown', blockShieldDrag, true);
+    window.addEventListener('pointermove', updateDragShield, true);
+    syncDragShield();
 
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
       window.removeEventListener('resize', schedulePositionUpdate);
       window.removeEventListener('scroll', schedulePositionUpdate, true);
-      window.removeEventListener('pointerdown', stopOversizedCardDrag, true);
-      window.removeEventListener('mousedown', stopOversizedCardDrag, true);
+      shield?.removeEventListener('pointerdown', blockShieldDrag, true);
+      shield?.removeEventListener('mousedown', blockShieldDrag, true);
+      window.removeEventListener('pointermove', updateDragShield, true);
       if (frameId !== undefined) {
         window.cancelAnimationFrame(frameId);
       }
@@ -164,7 +180,7 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
       }
       panelElement?.style.removeProperty('transform');
     };
-  }, [anchor, panelRef]);
+  }, [anchor, dragShieldRef, panelRef]);
 
   const onHeaderPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0 || (event.target instanceof Element && event.target.closest('button'))) {

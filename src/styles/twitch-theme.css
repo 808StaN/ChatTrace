@@ -77,6 +77,13 @@
     sans-serif;
 }
 
+.tul-drag-shield {
+  position: fixed;
+  right: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
 .tul-header {
   position: relative;
   display: flex;
