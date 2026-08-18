@@ -40,8 +40,25 @@ function getActionContainer(card: Element): Element {
   }
 
   const followAction = card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction);
-  if (followAction?.parentElement) {
-    return followAction.parentElement;
+  const whisperAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
+    (button) => /^(whisper|szept)$/i.test(button.textContent?.trim() ?? ''),
+  );
+
+  const followParent = followAction?.parentElement;
+  const whisperParent = whisperAction?.parentElement;
+  if (followParent && whisperParent && followParent !== whisperParent) {
+    const sharedRow = followParent.parentElement;
+    if (sharedRow) {
+      return sharedRow;
+    }
+  }
+
+  if (followParent) {
+    return followParent;
+  }
+
+  if (whisperParent) {
+    return whisperParent;
   }
 
   const localizedFollowAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
