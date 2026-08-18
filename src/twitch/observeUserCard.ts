@@ -27,7 +27,7 @@ function getVisibleCardSurface(card: Element): Element {
 
 function getCardDragTarget(card: Element): HTMLElement {
   return (
-    card.closest<HTMLElement>('#VIEWER_CARD_ID') ??
+    card.ownerDocument.getElementById('VIEWER_CARD_ID') ??
     card.closest<HTMLElement>('[role="dialog"]') ??
     (card as HTMLElement)
   );
