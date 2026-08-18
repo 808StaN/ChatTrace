@@ -55,13 +55,6 @@
   background: #772ce8;
 }
 
-.tul-action-row {
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  gap: 4px;
-}
-
 .tul-action-row > * {
   flex: 0 0 auto;
 }

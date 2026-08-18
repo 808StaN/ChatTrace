@@ -33,41 +33,22 @@ function getCardDragTarget(card: Element): HTMLElement {
   );
 }
 
-const ACTION_ROW_CLASS = 'tul-action-row';
-
-function findActionButton(card: Element, pattern: RegExp): HTMLButtonElement | undefined {
-  return [...card.querySelectorAll<HTMLButtonElement>('button')].find((button) =>
-    pattern.test(button.textContent?.trim() ?? ''),
-  );
-}
-
-function getActionRow(card: Element): Element {
-  const followAction =
-    card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction) ??
-    findActionButton(card, /^(follow|obserwuj)$/i);
-  const whisperAction = findActionButton(card, /^(whisper|szept)$/i);
-
-  const followParent = followAction?.parentElement;
-  const whisperParent = whisperAction?.parentElement;
-
-  if (followParent && whisperParent && followParent !== whisperParent) {
-    const sharedRow = followParent.parentElement;
-    if (sharedRow) {
-      return sharedRow;
-    }
-  }
-
-  if (followParent) {
-    return followParent;
-  }
-
-  if (whisperParent) {
-    return whisperParent;
-  }
-
+function getActionContainer(card: Element): Element {
   const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
   if (actionArea) {
     return actionArea;
+  }
+
+  const followAction = card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction);
+  if (followAction?.parentElement) {
+    return followAction.parentElement;
+  }
+
+  const localizedFollowAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
+    (button) => /^(follow|obserwuj)$/i.test(button.textContent?.trim() ?? ''),
+  );
+  if (localizedFollowAction?.parentElement) {
+    return localizedFollowAction.parentElement;
   }
 
   return card;
@@ -96,9 +77,7 @@ function injectLogsButton(
     onOpen(username, getVisibleCardSurface(card), getCardDragTarget(card));
   });
 
-  const actionRow = getActionRow(card);
-  actionRow.classList.add(ACTION_ROW_CLASS);
-  actionRow.append(button);
+  getActionContainer(card).append(button);
 }
 
 export interface TwitchUserCardsObserver {
