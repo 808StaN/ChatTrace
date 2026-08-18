@@ -1,3 +1,4 @@
+import { getMessages } from '@/i18n/messages';
 import { extractSelectedUsername, extractUsernameFromUserCard } from './getSelectedUsername';
 import { TWITCH_SELECTORS } from './selectors';
 
@@ -44,9 +45,12 @@ function getActionContainer(card: Element): Element {
 function injectLogsButton(
   card: Element,
   username: string,
+  locale: string,
   onOpen: (username: string, card: Element) => void,
 ): void {
-  if (card.querySelector(`[${BUTTON_ATTRIBUTE}]`)) {
+  const existingButton = card.querySelector<HTMLButtonElement>(`[${BUTTON_ATTRIBUTE}]`);
+  if (existingButton) {
+    existingButton.textContent = getMessages(locale).userCardAction;
     return;
   }
 
@@ -54,7 +58,7 @@ function injectLogsButton(
   button.type = 'button';
   button.className = 'tul-card-button';
   button.setAttribute(BUTTON_ATTRIBUTE, '');
-  button.textContent = 'Logs';
+  button.textContent = getMessages(locale).userCardAction;
   button.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -64,23 +68,30 @@ function injectLogsButton(
   getActionContainer(card).append(button);
 }
 
+export interface TwitchUserCardsObserver {
+  stop: () => void;
+  updateLocale: (locale: string) => void;
+}
+
 export function observeTwitchUserCards(
+  locale: string,
   onOpen: (username: string, card: Element) => void,
-): () => void {
+): TwitchUserCardsObserver {
   let selectedUsername: string | null = null;
+  let currentLocale = locale;
   let frameId: number | undefined;
 
   const scanCards = () => {
     frameId = undefined;
     for (const card of document.querySelectorAll(TWITCH_SELECTORS.userCard)) {
       if (selectedUsername && isLikelyUserCard(card, selectedUsername)) {
-        injectLogsButton(card, selectedUsername, onOpen);
+        injectLogsButton(card, selectedUsername, currentLocale, onOpen);
         continue;
       }
 
       const cardUsername = extractUsernameFromUserCard(card);
       if (cardUsername && isExplicitUserCard(card)) {
-        injectLogsButton(card, cardUsername, onOpen);
+        injectLogsButton(card, cardUsername, currentLocale, onOpen);
       }
     }
   };
@@ -116,11 +127,19 @@ export function observeTwitchUserCards(
   observer.observe(document.body, { childList: true, subtree: true });
   scheduleScan();
 
-  return () => {
-    document.removeEventListener('click', onDocumentClick, true);
-    observer.disconnect();
-    if (frameId !== undefined) {
-      window.cancelAnimationFrame(frameId);
-    }
+  const updateLocale = (nextLocale: string) => {
+    currentLocale = nextLocale;
+    scheduleScan();
+  };
+
+  return {
+    stop: () => {
+      document.removeEventListener('click', onDocumentClick, true);
+      observer.disconnect();
+      if (frameId !== undefined) {
+        window.cancelAnimationFrame(frameId);
+      }
+    },
+    updateLocale,
   };
 }

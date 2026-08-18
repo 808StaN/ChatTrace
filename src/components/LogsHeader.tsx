@@ -1,6 +1,8 @@
 import type { PointerEventHandler } from 'react';
+import { getMessages } from '@/i18n/messages';
 
 interface LogsHeaderProps {
+  locale: string;
   onClose: () => void;
   onPointerDown: PointerEventHandler<HTMLElement>;
   onPointerMove: PointerEventHandler<HTMLElement>;
@@ -8,11 +10,13 @@ interface LogsHeaderProps {
 }
 
 export function LogsHeader({
+  locale,
   onClose,
   onPointerDown,
   onPointerMove,
   onPointerUp,
 }: LogsHeaderProps) {
+  const t = getMessages(locale);
   return (
     <header
       className="tul-header"
@@ -21,9 +25,9 @@ export function LogsHeader({
       onPointerUp={onPointerUp}
     >
       <div>
-        <p className="tul-eyebrow">Chat history</p>
+        <p className="tul-eyebrow">{t.panelTitle}</p>
       </div>
-      <button className="tul-icon-button" type="button" aria-label="Close logs" onClick={onClose}>
+      <button className="tul-icon-button" type="button" aria-label={t.closePanel} onClick={onClose}>
         ×
       </button>
     </header>

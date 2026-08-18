@@ -1,15 +1,20 @@
+import { getMessages } from '@/i18n/messages';
+
 export function ErrorState({
   rateLimited,
   onRetry,
+  locale,
 }: {
   rateLimited: boolean;
   onRetry: () => void;
+  locale: string;
 }) {
+  const t = getMessages(locale);
   return (
     <div className="tul-state tul-state-muted">
-      <span>{rateLimited ? 'Too many requests. Try again shortly.' : "Couldn't load logs."}</span>
+      <span>{rateLimited ? t.rateLimited : t.loadError}</span>
       <button className="tul-text-button" type="button" onClick={onRetry}>
-        Retry
+        {t.retry}
       </button>
     </div>
   );

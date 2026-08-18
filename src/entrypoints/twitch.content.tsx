@@ -39,7 +39,7 @@ function TwitchLogsApp() {
   }, [context?.anchor]);
 
   useEffect(() => {
-    const stopUserCards = observeTwitchUserCards((username, anchor) => {
+    const userCards = observeTwitchUserCards(locale, (username, anchor) => {
       const channel = getCurrentChannel();
       if (channel) {
         setContext({ anchor, channel, username });
@@ -50,17 +50,19 @@ function TwitchLogsApp() {
     });
 
     const onLangChange = () => {
-      setLocale(getTwitchLocale());
+      const nextLocale = getTwitchLocale();
+      setLocale(nextLocale);
+      userCards.updateLocale(nextLocale);
     };
     const langObserver = new MutationObserver(onLangChange);
     langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
 
     return () => {
-      stopUserCards();
+      userCards.stop();
       stopChannelObserver();
       langObserver.disconnect();
     };
-  }, []);
+  }, [locale]);
 
   return context ? (
     <LogsPanel

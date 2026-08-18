@@ -3,6 +3,7 @@ import { useUserLogs } from '@/hooks/useUserLogs';
 import { useUserCardAnchor } from '@/hooks/useUserCardAnchor';
 import { useTwitchBadges } from '@/hooks/useTwitchBadges';
 import { useChatEmotes } from '@/hooks/useChatEmotes';
+import { getMessages } from '@/i18n/messages';
 import { filterMessages } from '@/utils/search';
 import { EmptyState } from './EmptyState';
 import { ErrorState } from './ErrorState';
@@ -31,31 +32,31 @@ export function LogsPanel({ channel, username, anchor, locale, onClose }: LogsPa
   const panelRef = useRef<HTMLElement>(null);
   const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
     useUserCardAnchor(anchor, panelRef);
+  const t = getMessages(locale);
 
   return (
     <aside
       className="tul-panel"
       ref={panelRef}
       style={panelStyle}
-      aria-label={`Logs for ${username} in ${channel}`}
+      aria-label={t.panelAriaLabel(username, channel)}
     >
       <LogsHeader
+        locale={locale}
         onClose={onClose}
         onPointerDown={onHeaderPointerDown}
         onPointerMove={onHeaderPointerMove}
         onPointerUp={onHeaderPointerUp}
       />
-      <LogsSearch query={query} onChange={setQuery} />
+      <LogsSearch query={query} onChange={setQuery} locale={locale} />
       <div className="tul-content">
-        {status === 'loading' && <LoadingState />}
-        {status === 'empty' && (
-          <EmptyState>No logs found for this user on this channel.</EmptyState>
-        )}
+        {status === 'loading' && <LoadingState label={t.loading} />}
+        {status === 'empty' && <EmptyState>{t.noLogs}</EmptyState>}
         {(status === 'error' || status === 'rate-limited') && (
-          <ErrorState rateLimited={status === 'rate-limited'} onRetry={retry} />
+          <ErrorState rateLimited={status === 'rate-limited'} onRetry={retry} locale={locale} />
         )}
         {status === 'ready' && filteredMessages.length === 0 && (
-          <EmptyState>No loaded messages match your search.</EmptyState>
+          <EmptyState>{t.noSearchResults}</EmptyState>
         )}
         {status === 'ready' && filteredMessages.length > 0 && (
           <LogsList
@@ -72,7 +73,7 @@ export function LogsPanel({ channel, username, anchor, locale, onClose }: LogsPa
             disabled={isLoadingOlder}
             onClick={loadOlder}
           >
-            {isLoadingOlder ? 'Loading...' : 'Load older messages'}
+            {isLoadingOlder ? t.loading : t.loadOlder}
           </button>
         )}
       </div>
