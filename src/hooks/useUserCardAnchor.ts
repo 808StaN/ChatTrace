@@ -47,11 +47,12 @@ function getPanelPosition(anchor: Element): PanelPosition {
 
 export function useUserCardAnchor(
   anchor: Element,
+  dragTarget: HTMLElement,
   panelRef: RefObject<HTMLElement | null>,
-  dragShieldRef: RefObject<HTMLElement | null>,
 ) {
   const [position, setPosition] = useState<PanelPosition>(() => getPanelPosition(anchor));
   const anchorRef = useRef(anchor);
+  const dragTargetRef = useRef(dragTarget);
   const drag = useRef<{
     startX: number;
     startY: number;
@@ -70,17 +71,10 @@ export function useUserCardAnchor(
       return;
     }
 
-    const anchorElement = anchorRef.current as HTMLElement;
-    anchorElement.style.translate = `${activeDrag.translateX + delta.x}px ${activeDrag.translateY + delta.y}px`;
+    const dragElement = dragTargetRef.current;
+    dragElement.style.translate = `${activeDrag.translateX + delta.x}px ${activeDrag.translateY + delta.y}px`;
     panelRef.current?.style.setProperty('transform', `translate3d(${delta.x}px, ${delta.y}px, 0)`);
-    const cardBounds = anchorElement.getBoundingClientRect();
-    const shield = dragShieldRef.current;
-    if (shield) {
-      shield.style.left = `${cardBounds.right}px`;
-      shield.style.top = `${cardBounds.top}px`;
-      shield.style.height = `${cardBounds.height}px`;
-    }
-  }, [dragShieldRef, panelRef]);
+  }, [panelRef]);
 
   useLayoutEffect(() => {
     if (shouldClearPanelTransform.current) {
@@ -91,25 +85,14 @@ export function useUserCardAnchor(
 
   useLayoutEffect(() => {
     anchorRef.current = anchor;
+    dragTargetRef.current = dragTarget;
     const anchorElement = anchorRef.current as HTMLElement;
     const panelElement = panelRef.current;
     let frameId: number | undefined;
     let trackingFrameId: number | undefined;
     let previousPosition = getPanelPosition(anchorElement);
-    const syncDragShield = () => {
-      const shield = dragShieldRef.current;
-      if (!shield) {
-        return;
-      }
-      const cardBounds = anchorElement.getBoundingClientRect();
-      shield.style.left = `${cardBounds.right}px`;
-      shield.style.top = `${cardBounds.top}px`;
-      shield.style.height = `${cardBounds.height}px`;
-      shield.style.zIndex = String(getCardZIndex(anchorElement) + 1);
-    };
     const updatePosition = () => {
       frameId = undefined;
-      syncDragShield();
       if (drag.current) {
         return;
       }
@@ -140,35 +123,11 @@ export function useUserCardAnchor(
     };
     trackingFrameId = window.requestAnimationFrame(trackCardPosition);
 
-    const updateDragShield = (event: PointerEvent) => {
-      const shield = dragShieldRef.current;
-      if (!shield) {
-        return;
-      }
-
-      shield.style.pointerEvents = 'none';
-      const target = document.elementFromPoint(event.clientX, event.clientY);
-      const cursor = target ? window.getComputedStyle(target).cursor : '';
-      shield.style.pointerEvents = cursor === 'grab' || cursor === 'grabbing' ? 'auto' : 'none';
-    };
-    const blockShieldDrag = (event: Event) => {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-    };
-    const shield = dragShieldRef.current;
-    shield?.addEventListener('pointerdown', blockShieldDrag, true);
-    shield?.addEventListener('mousedown', blockShieldDrag, true);
-    window.addEventListener('pointermove', updateDragShield, true);
-    syncDragShield();
-
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
       window.removeEventListener('resize', schedulePositionUpdate);
       window.removeEventListener('scroll', schedulePositionUpdate, true);
-      shield?.removeEventListener('pointerdown', blockShieldDrag, true);
-      shield?.removeEventListener('mousedown', blockShieldDrag, true);
-      window.removeEventListener('pointermove', updateDragShield, true);
       if (frameId !== undefined) {
         window.cancelAnimationFrame(frameId);
       }
@@ -180,14 +139,14 @@ export function useUserCardAnchor(
       }
       panelElement?.style.removeProperty('transform');
     };
-  }, [anchor, dragShieldRef, panelRef]);
+  }, [anchor, dragTarget, panelRef]);
 
   const onHeaderPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0 || (event.target instanceof Element && event.target.closest('button'))) {
       return;
     }
 
-    const style = (anchorRef.current as HTMLElement).style;
+    const style = dragTargetRef.current.style;
     const [translateX = '0', translateY = '0'] = style.translate.split(' ');
     drag.current = {
       startX: event.clientX,

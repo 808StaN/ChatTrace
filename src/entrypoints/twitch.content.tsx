@@ -8,6 +8,7 @@ import '@/styles/twitch-theme.css';
 
 interface LogsContext {
   anchor: Element;
+  dragTarget: HTMLElement;
   channel: string;
   username: string;
 }
@@ -39,10 +40,10 @@ function TwitchLogsApp() {
   }, [context?.anchor]);
 
   useEffect(() => {
-    const userCards = observeTwitchUserCards(locale, (username, anchor) => {
+    const userCards = observeTwitchUserCards(locale, (username, anchor, dragTarget) => {
       const channel = getCurrentChannel();
       if (channel) {
-        setContext({ anchor, channel, username });
+        setContext({ anchor, dragTarget, channel, username });
       }
     });
     const stopChannelObserver = observeCurrentChannel((channel) => {
@@ -68,6 +69,7 @@ function TwitchLogsApp() {
     <LogsPanel
       key={`${context.channel}:${context.username}`}
       anchor={context.anchor}
+      dragTarget={context.dragTarget}
       channel={context.channel}
       username={context.username}
       locale={locale}

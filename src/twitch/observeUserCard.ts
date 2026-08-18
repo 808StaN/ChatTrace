@@ -25,6 +25,10 @@ function getVisibleCardSurface(card: Element): Element {
   return card.matches(USER_CARD_SURFACE) ? card : (card.querySelector(USER_CARD_SURFACE) ?? card);
 }
 
+function getCardDragTarget(card: Element): HTMLElement {
+  return card.closest<HTMLElement>('[role="dialog"]') ?? (card as HTMLElement);
+}
+
 function getActionContainer(card: Element): Element {
   const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
   if (actionArea) {
@@ -46,7 +50,7 @@ function injectLogsButton(
   card: Element,
   username: string,
   locale: string,
-  onOpen: (username: string, card: Element) => void,
+  onOpen: (username: string, card: Element, dragTarget: HTMLElement) => void,
 ): void {
   const existingButton = card.querySelector<HTMLButtonElement>(`[${BUTTON_ATTRIBUTE}]`);
   if (existingButton) {
@@ -62,7 +66,7 @@ function injectLogsButton(
   button.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
-    onOpen(username, getVisibleCardSurface(card));
+    onOpen(username, getVisibleCardSurface(card), getCardDragTarget(card));
   });
 
   getActionContainer(card).append(button);
@@ -75,7 +79,7 @@ export interface TwitchUserCardsObserver {
 
 export function observeTwitchUserCards(
   locale: string,
-  onOpen: (username: string, card: Element) => void,
+  onOpen: (username: string, card: Element, dragTarget: HTMLElement) => void,
 ): TwitchUserCardsObserver {
   let selectedUsername: string | null = null;
   let currentLocale = locale;
