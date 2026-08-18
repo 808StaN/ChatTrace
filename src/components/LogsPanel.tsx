@@ -15,10 +15,11 @@ interface LogsPanelProps {
   channel: string;
   username: string;
   anchor: Element;
+  locale: string;
   onClose: () => void;
 }
 
-export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps) {
+export function LogsPanel({ channel, username, anchor, locale, onClose }: LogsPanelProps) {
   const [query, setQuery] = useState('');
   const { messages, status, isLoadingOlder, canLoadOlder, retry, loadOlder } = useUserLogs(
     channel,
@@ -61,6 +62,7 @@ export function LogsPanel({ channel, username, anchor, onClose }: LogsPanelProps
             messages={filteredMessages}
             badgeImages={badgeImages}
             externalEmotes={externalEmotes}
+            locale={locale}
           />
         )}
         {status === 'ready' && canLoadOlder && (

@@ -25,4 +25,14 @@ describe('logs UI helpers', () => {
   it('uses a readable date label', () => {
     expect(dayLabel(new Date('2026-08-15T12:00:00Z'), 'en-US')).toContain('August');
   });
+
+  it('localizes relative day labels', () => {
+    const today = new Date();
+    expect(dayLabel(today, 'en-US')).toBe('today');
+    expect(dayLabel(today, 'pl-PL')).toBe('dzisiaj');
+
+    const yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+    expect(dayLabel(yesterday, 'en-US')).toBe('yesterday');
+    expect(dayLabel(yesterday, 'pl-PL')).toBe('wczoraj');
+  });
 });

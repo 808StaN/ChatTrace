@@ -9,16 +9,18 @@ export function LogsMessage({
   message,
   badgeImages,
   externalEmotes,
+  locale,
 }: {
   message: ChatMessage;
   badgeImages: BadgeImageLookup;
   externalEmotes: ExternalEmoteLookup;
+  locale: string;
 }) {
   const messageParts = tokenizeMessage(message, externalEmotes);
   return (
     <article className="tul-message">
       <time className="tul-message-time" dateTime={message.timestamp.toISOString()}>
-        {formatMessageTime(message.timestamp)}
+        {formatMessageTime(message.timestamp, locale)}
       </time>
       <div className="tul-message-body">
         <span className="tul-message-meta">

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { LogsPanel } from '@/components/LogsPanel';
 import { getCurrentChannel, observeCurrentChannel } from '@/twitch/getCurrentChannel';
 import { observeTwitchUserCards } from '@/twitch/observeUserCard';
+import { getTwitchLocale } from '@/twitch/getTwitchLocale';
 import '@/styles/twitch-theme.css';
 
 interface LogsContext {
@@ -13,6 +14,7 @@ interface LogsContext {
 
 function TwitchLogsApp() {
   const [context, setContext] = useState<LogsContext | null>(null);
+  const [locale, setLocale] = useState(() => getTwitchLocale());
 
   useEffect(() => {
     const anchor = context?.anchor;
@@ -47,9 +49,16 @@ function TwitchLogsApp() {
       setContext((current) => (current?.channel === channel ? current : null));
     });
 
+    const onLangChange = () => {
+      setLocale(getTwitchLocale());
+    };
+    const langObserver = new MutationObserver(onLangChange);
+    langObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
     return () => {
       stopUserCards();
       stopChannelObserver();
+      langObserver.disconnect();
     };
   }, []);
 
@@ -59,6 +68,7 @@ function TwitchLogsApp() {
       anchor={context.anchor}
       channel={context.channel}
       username={context.username}
+      locale={locale}
       onClose={() => setContext(null)}
     />
   ) : null;

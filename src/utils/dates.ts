@@ -4,23 +4,24 @@ export function dayKey(date: Date): string {
   return [date.getFullYear(), date.getMonth(), date.getDate()].join('-');
 }
 
-export function dayLabel(date: Date, locale: string = navigator.language): string {
+export function dayLabel(date: Date, locale: string): string {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const messageDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   const difference = Math.round((today.valueOf() - messageDay.valueOf()) / 86_400_000);
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
   if (difference === 0) {
-    return 'Today';
+    return rtf.format(0, 'day');
   }
   if (difference === 1) {
-    return 'Yesterday';
+    return rtf.format(-1, 'day');
   }
   return new Intl.DateTimeFormat(locale, { month: 'long', day: 'numeric', year: 'numeric' }).format(
     date,
   );
 }
 
-export function formatMessageTime(date: Date, locale: string = navigator.language): string {
+export function formatMessageTime(date: Date, locale: string): string {
   return new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit' }).format(date);
 }
 
