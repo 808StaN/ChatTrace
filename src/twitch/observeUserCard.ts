@@ -33,19 +33,23 @@ function getCardDragTarget(card: Element): HTMLElement {
   );
 }
 
-function getActionContainer(card: Element): Element {
-  const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
-  if (actionArea) {
-    return actionArea;
-  }
+const ACTION_ROW_CLASS = 'tul-action-row';
 
-  const followAction = card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction);
-  const whisperAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
-    (button) => /^(whisper|szept)$/i.test(button.textContent?.trim() ?? ''),
+function findActionButton(card: Element, pattern: RegExp): HTMLButtonElement | undefined {
+  return [...card.querySelectorAll<HTMLButtonElement>('button')].find((button) =>
+    pattern.test(button.textContent?.trim() ?? ''),
   );
+}
+
+function getActionRow(card: Element): Element {
+  const followAction =
+    card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction) ??
+    findActionButton(card, /^(follow|obserwuj)$/i);
+  const whisperAction = findActionButton(card, /^(whisper|szept)$/i);
 
   const followParent = followAction?.parentElement;
   const whisperParent = whisperAction?.parentElement;
+
   if (followParent && whisperParent && followParent !== whisperParent) {
     const sharedRow = followParent.parentElement;
     if (sharedRow) {
@@ -61,10 +65,12 @@ function getActionContainer(card: Element): Element {
     return whisperParent;
   }
 
-  const localizedFollowAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
-    (button) => /^(follow|obserwuj)$/i.test(button.textContent?.trim() ?? ''),
-  );
-  return localizedFollowAction?.parentElement ?? card;
+  const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
+  if (actionArea) {
+    return actionArea;
+  }
+
+  return card;
 }
 
 function injectLogsButton(
@@ -90,7 +96,9 @@ function injectLogsButton(
     onOpen(username, getVisibleCardSurface(card), getCardDragTarget(card));
   });
 
-  getActionContainer(card).append(button);
+  const actionRow = getActionRow(card);
+  actionRow.classList.add(ACTION_ROW_CLASS);
+  actionRow.append(button);
 }
 
 export interface TwitchUserCardsObserver {
