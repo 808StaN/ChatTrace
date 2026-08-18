@@ -101,7 +101,19 @@ function injectLogsButton(
     onOpen(username, getVisibleCardSurface(card), getCardDragTarget(card));
   });
 
-  getActionContainer(card).append(button);
+  const container = getActionContainer(card);
+  container.append(button);
+
+  const previousSibling = button.previousElementSibling;
+  if (previousSibling) {
+    const buttonTop = button.getBoundingClientRect().top;
+    const previousTop = previousSibling.getBoundingClientRect().top;
+    if (buttonTop > previousTop) {
+      button.setAttribute('data-tul-wrapped-action', '');
+    } else {
+      button.removeAttribute('data-tul-wrapped-action');
+    }
+  }
 }
 
 export interface TwitchUserCardsObserver {
