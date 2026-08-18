@@ -122,19 +122,22 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
         return;
       }
 
-      const cardDialog = event.target.closest('[role="dialog"]');
-      if (!cardDialog?.contains(anchorElement)) {
-        return;
-      }
-
       const cardBounds = anchorElement.getBoundingClientRect();
       const isInsideVisibleCard =
         event.clientX >= cardBounds.left &&
         event.clientX <= cardBounds.right &&
         event.clientY >= cardBounds.top &&
         event.clientY <= cardBounds.bottom;
+      const isRightOfCard = event.clientX > cardBounds.right;
+      const isWithinCardHeight =
+        event.clientY >= cardBounds.top && event.clientY <= cardBounds.bottom;
       const cursor = window.getComputedStyle(event.target).cursor;
-      if (isInsideVisibleCard || (cursor !== 'grab' && cursor !== 'grabbing')) {
+      if (
+        isInsideVisibleCard ||
+        !isRightOfCard ||
+        !isWithinCardHeight ||
+        (cursor !== 'grab' && cursor !== 'grabbing')
+      ) {
         return;
       }
 
