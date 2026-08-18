@@ -26,7 +26,11 @@ function getVisibleCardSurface(card: Element): Element {
 }
 
 function getCardDragTarget(card: Element): HTMLElement {
-  return card.closest<HTMLElement>('[role="dialog"]') ?? (card as HTMLElement);
+  return (
+    card.closest<HTMLElement>('#VIEWER_CARD_ID') ??
+    card.closest<HTMLElement>('[role="dialog"]') ??
+    (card as HTMLElement)
+  );
 }
 
 function getActionContainer(card: Element): Element {
