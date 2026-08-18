@@ -33,22 +33,46 @@ function getCardDragTarget(card: Element): HTMLElement {
   );
 }
 
+function findActionButton(card: Element, pattern: RegExp): HTMLButtonElement | undefined {
+  return [...card.querySelectorAll<HTMLButtonElement>('button')].find((button) =>
+    pattern.test(button.textContent?.trim() ?? ''),
+  );
+}
+
+function getSharedContainer(
+  first: Element,
+  second: Element,
+  card: Element,
+): Element | null {
+  let container = first.parentElement;
+  while (container && container !== card) {
+    if (container.contains(second)) {
+      return container;
+    }
+    container = container.parentElement;
+  }
+  return null;
+}
+
 function getActionContainer(card: Element): Element {
-  const actionArea = card.querySelector(TWITCH_SELECTORS.userCardActionArea);
+  const followAction =
+    card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction) ??
+    findActionButton(card, /^(follow|obserwuj)$/i);
+  const giftAction = findActionButton(card, /^(gift a sub|podaruj subskrypcję)$/i);
+  if (followAction && giftAction) {
+    const sharedContainer = getSharedContainer(giftAction, followAction, card);
+    if (sharedContainer) {
+      return sharedContainer;
+    }
+  }
+
+  const actionArea = card.querySelector('[data-a-target="user-card-actions"]');
   if (actionArea) {
     return actionArea;
   }
 
-  const followAction = card.querySelector<HTMLButtonElement>(TWITCH_SELECTORS.followAction);
   if (followAction?.parentElement) {
     return followAction.parentElement;
-  }
-
-  const localizedFollowAction = [...card.querySelectorAll<HTMLButtonElement>('button')].find(
-    (button) => /^(follow|obserwuj)$/i.test(button.textContent?.trim() ?? ''),
-  );
-  if (localizedFollowAction?.parentElement) {
-    return localizedFollowAction.parentElement;
   }
 
   return card;
