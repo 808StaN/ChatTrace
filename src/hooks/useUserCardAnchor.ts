@@ -117,11 +117,39 @@ export function useUserCardAnchor(anchor: Element, panelRef: RefObject<HTMLEleme
     };
     trackingFrameId = window.requestAnimationFrame(trackCardPosition);
 
+    const stopOversizedCardDrag = (event: PointerEvent | MouseEvent) => {
+      if (event.button !== 0 || !(event.target instanceof Element)) {
+        return;
+      }
+
+      const cardDialog = event.target.closest('[role="dialog"]');
+      if (!cardDialog?.contains(anchorElement)) {
+        return;
+      }
+
+      const cardBounds = anchorElement.getBoundingClientRect();
+      const isInsideVisibleCard =
+        event.clientX >= cardBounds.left &&
+        event.clientX <= cardBounds.right &&
+        event.clientY >= cardBounds.top &&
+        event.clientY <= cardBounds.bottom;
+      const cursor = window.getComputedStyle(event.target).cursor;
+      if (isInsideVisibleCard || (cursor !== 'grab' && cursor !== 'grabbing')) {
+        return;
+      }
+
+      event.stopImmediatePropagation();
+    };
+    window.addEventListener('pointerdown', stopOversizedCardDrag, true);
+    window.addEventListener('mousedown', stopOversizedCardDrag, true);
+
     return () => {
       resizeObserver.disconnect();
       mutationObserver.disconnect();
       window.removeEventListener('resize', schedulePositionUpdate);
       window.removeEventListener('scroll', schedulePositionUpdate, true);
+      window.removeEventListener('pointerdown', stopOversizedCardDrag, true);
+      window.removeEventListener('mousedown', stopOversizedCardDrag, true);
       if (frameId !== undefined) {
         window.cancelAnimationFrame(frameId);
       }
