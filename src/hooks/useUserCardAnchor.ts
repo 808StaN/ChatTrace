@@ -56,8 +56,7 @@ export function useUserCardAnchor(
   const drag = useRef<{
     startX: number;
     startY: number;
-    translateX: number;
-    translateY: number;
+    targets: Array<{ element: HTMLElement; translateX: number; translateY: number }>;
   } | null>(null);
   const pendingDrag = useRef<{ x: number; y: number } | null>(null);
   const dragFrameId = useRef<number | undefined>(undefined);
@@ -71,8 +70,9 @@ export function useUserCardAnchor(
       return;
     }
 
-    const dragElement = dragTargetRef.current;
-    dragElement.style.translate = `${activeDrag.translateX + delta.x}px ${activeDrag.translateY + delta.y}px`;
+    for (const target of activeDrag.targets) {
+      target.element.style.translate = `${target.translateX + delta.x}px ${target.translateY + delta.y}px`;
+    }
     panelRef.current?.style.setProperty('transform', `translate3d(${delta.x}px, ${delta.y}px, 0)`);
   }, [panelRef]);
 
@@ -141,22 +141,54 @@ export function useUserCardAnchor(
     };
   }, [anchor, dragTarget, panelRef]);
 
+  const getDragTargets = useCallback(() => {
+    const anchorBounds = anchorRef.current.getBoundingClientRect();
+    const candidates = [
+      ...document.elementsFromPoint(
+        anchorBounds.left + anchorBounds.width / 2,
+        anchorBounds.top + anchorBounds.height / 2,
+      ),
+      dragTargetRef.current,
+    ].filter((element): element is HTMLElement => {
+      if (!(element instanceof HTMLElement) || window.getComputedStyle(element).cursor !== 'move') {
+        return false;
+      }
+
+      const bounds = element.getBoundingClientRect();
+      return (
+        bounds.left <= anchorBounds.left &&
+        bounds.top <= anchorBounds.top &&
+        bounds.right >= anchorBounds.right &&
+        bounds.bottom >= anchorBounds.bottom
+      );
+    });
+    const outermostTargets = [...new Set(candidates)].filter(
+      (candidate) => !candidates.some((other) => other !== candidate && other.contains(candidate)),
+    );
+
+    return (outermostTargets.length > 0 ? outermostTargets : [dragTargetRef.current]).map((element) => {
+      const [translateX = '0', translateY = '0'] = element.style.translate.split(' ');
+      return {
+        element,
+        translateX: Number.parseFloat(translateX) || 0,
+        translateY: Number.parseFloat(translateY) || 0,
+      };
+    });
+  }, []);
+
   const onHeaderPointerDown = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (event.button !== 0 || (event.target instanceof Element && event.target.closest('button'))) {
       return;
     }
 
-    const style = dragTargetRef.current.style;
-    const [translateX = '0', translateY = '0'] = style.translate.split(' ');
     drag.current = {
       startX: event.clientX,
       startY: event.clientY,
-      translateX: Number.parseFloat(translateX) || 0,
-      translateY: Number.parseFloat(translateY) || 0,
+      targets: getDragTargets(),
     };
     pendingDrag.current = { x: 0, y: 0 };
     event.currentTarget.setPointerCapture(event.pointerId);
-  }, []);
+  }, [getDragTargets]);
 
   const onHeaderPointerMove = useCallback((event: ReactPointerEvent<HTMLElement>) => {
     if (!drag.current) {
