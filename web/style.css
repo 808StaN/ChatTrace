@@ -147,17 +147,39 @@ h1 {
 
 .store-button {
   display: inline-flex;
-  gap: 9px;
-  align-items: baseline;
+  gap: 10px;
+  align-items: center;
   background: #18181b;
+  color: #fff;
   box-shadow: 5px 5px 0 rgba(34, 10, 69, 0.3);
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 }
 
-.store-button small {
-  color: #c7a6ff;
-  font-size: 10px;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+.chrome-icon {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.store-button:hover,
+.store-button:focus-visible {
+  background: #26262c;
+  box-shadow: 8px 8px 0 rgba(34, 10, 69, 0.26);
+  transform: translate(-3px, -3px);
+}
+
+.store-button:active {
+  box-shadow: 2px 2px 0 rgba(34, 10, 69, 0.3);
+  transform: translate(3px, 3px);
+}
+
+.store-button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
 }
 
 .secondary-button {
