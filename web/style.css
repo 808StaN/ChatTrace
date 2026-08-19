@@ -55,28 +55,44 @@ a {
 }
 
 .brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
   width: 31px;
   height: 31px;
-  border: 2px solid #fff;
-  border-radius: 9px 9px 9px 2px;
-}
-
-.brand-mark span {
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: #fff;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .text-link,
-.secondary-button {
+.secondary-button,
+.site-footer a {
+  position: relative;
+  display: inline-flex;
   font-weight: 700;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
+  text-decoration: none;
+}
+
+.text-link::after,
+.secondary-button::after,
+.site-footer a::after {
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  left: 0;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 160ms ease;
+}
+
+.text-link:hover::after,
+.text-link:focus-visible::after,
+.secondary-button:hover::after,
+.secondary-button:focus-visible::after,
+.site-footer a:hover::after,
+.site-footer a:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
 .hero {
