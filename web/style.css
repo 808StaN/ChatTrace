@@ -81,7 +81,7 @@ a {
   content: '';
   transform: scaleX(0);
   transform-origin: right;
-  transition: transform 160ms ease;
+  transition: transform 260ms ease;
 }
 
 .text-link:hover::after,
@@ -176,16 +176,6 @@ h1 {
   background: #18181b;
   box-shadow: 15px 16px 0 rgba(57, 16, 110, 0.26);
   transform: rotate(2.5deg);
-}
-
-.trace-card::after {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 72px;
-  height: 5px;
-  background: #c7a6ff;
-  content: '';
 }
 
 .trace-card-header {
