@@ -12,9 +12,7 @@
 body {
   min-width: 320px;
   margin: 0;
-  background:
-    radial-gradient(circle at 90% 14%, rgba(255, 255, 255, 0.2), transparent 23rem),
-    linear-gradient(125deg, #8f45f7 0%, #7a37d5 52%, #5f26ad 100%);
+  background: linear-gradient(125deg, #8f45f7 0%, #7a37d5 52%, #5f26ad 100%);
 }
 
 a {
@@ -172,7 +170,7 @@ h1 {
   width: 100%;
   padding-bottom: 18px;
   border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 16px 16px 16px 3px;
+  border-radius: 16px;
   background: #18181b;
   box-shadow: 15px 16px 0 rgba(57, 16, 110, 0.26);
   transform: rotate(2.5deg);
