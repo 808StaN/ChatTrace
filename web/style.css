@@ -155,8 +155,7 @@ h1 {
   text-decoration: none;
   transition:
     transform 180ms ease,
-    box-shadow 180ms ease,
-    background 180ms ease;
+    box-shadow 180ms ease;
 }
 
 .chrome-icon {
@@ -165,9 +164,28 @@ h1 {
   flex: none;
 }
 
+.chrome-icon .chrome-red {
+  fill: #ea4335;
+}
+
+.chrome-icon .chrome-yellow {
+  fill: #fbbc04;
+}
+
+.chrome-icon .chrome-green {
+  fill: #34a853;
+}
+
+.chrome-icon .chrome-blue {
+  fill: #4285f4;
+}
+
+.chrome-icon .chrome-center {
+  fill: #fff;
+}
+
 .store-button:hover,
 .store-button:focus-visible {
-  background: #26262c;
   box-shadow: 8px 8px 0 rgba(34, 10, 69, 0.26);
   transform: translate(-3px, -3px);
 }
