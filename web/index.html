@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ChatTrace brings available Twitch chat history into Twitch user cards."
+    />
+    <title>ChatTrace - Chat History for Twitch</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="ChatTrace home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+          <span>ChatTrace</span>
+        </a>
+        <a class="text-link" href="privacy-policy.html">Privacy policy</a>
+      </header>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Chat history, without leaving Twitch</p>
+          <h1 id="hero-title">Follow the chat<br />back to its source.</h1>
+          <p class="lede">
+            ChatTrace adds chat history directly to Twitch user cards. Pick a chatter, open their
+            history, and browse available past messages in the channel you are watching.
+          </p>
+          <div class="hero-actions">
+            <span class="store-button" aria-disabled="true"
+              >Chrome Web Store <small>Coming soon</small></span
+            >
+            <a class="secondary-button" href="privacy-policy.html">Read privacy policy</a>
+          </div>
+        </div>
+
+        <div class="trace-card" aria-label="Example ChatTrace panel">
+          <div class="trace-card-header">
+            <span>CHAT HISTORY</span>
+            <span aria-hidden="true">x</span>
+          </div>
+          <div class="trace-search">Search messages...</div>
+          <div class="trace-day">TODAY</div>
+          <div class="trace-line">
+            <time>14:06</time><strong>pixelpilot:</strong><span>that was clean</span>
+          </div>
+          <div class="trace-line">
+            <time>14:04</time><strong>pixelpilot:</strong><span>no way</span>
+          </div>
+          <div class="trace-line">
+            <time>14:01</time><strong>pixelpilot:</strong><span>chat saw that</span>
+          </div>
+          <div class="trace-signal"><i></i><i></i><i></i><span>available history</span></div>
+        </div>
+      </section>
+
+      <section class="how-it-works" aria-labelledby="how-title">
+        <div>
+          <p class="eyebrow">One simple flow</p>
+          <h2 id="how-title">See the context behind the message.</h2>
+        </div>
+        <ol>
+          <li><span>01</span>Open a Twitch chatter's user card.</li>
+          <li><span>02</span>Select Chat history.</li>
+          <li><span>03</span>Browse available messages in the current channel.</li>
+        </ol>
+      </section>
+
+      <footer class="site-footer">
+        <span>ChatTrace for Twitch</span>
+        <a href="privacy-policy.html">Privacy policy</a>
+      </footer>
+    </main>
+  </body>
+</html>

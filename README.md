@@ -68,7 +68,7 @@ The extension talks only to the endpoint used by Supa's current client. It does 
 
 No account, analytics, tracking, Twitch bot, database, crawler, or chat logger is included. The extension reads only the current Twitch channel and the selected chatter username, then requests matching existing logs. It retains a short-lived in-memory cache while the page is open and caps the visible loaded history at 2,000 messages.
 
-The publishable policy is in [`privacy-policy.html`](privacy-policy.html). It must be hosted at a public HTTPS URL before submitting to the Chrome Web Store.
+The publishable website and policy are in [`web/`](web/). Host `web/privacy-policy.html` at a public HTTPS URL before submitting to the Chrome Web Store.
 
 ## Limitations
 

@@ -6,7 +6,7 @@ ChatTrace displays available public Twitch chat history for a selected chatter i
 
 ## Privacy Policy
 
-Publish `privacy-policy.html` at a public HTTPS URL and paste that URL into the Chrome Web Store privacy-policy field.
+Publish `web/privacy-policy.html` at a public HTTPS URL and paste that URL into the Chrome Web Store privacy-policy field.
 
 ## Host Permission Justification
 
