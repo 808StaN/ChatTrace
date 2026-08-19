@@ -162,26 +162,11 @@ h1 {
   width: 20px;
   height: 20px;
   flex: none;
-}
-
-.chrome-icon .chrome-red {
-  fill: #ea4335;
-}
-
-.chrome-icon .chrome-yellow {
-  fill: #fbbc04;
-}
-
-.chrome-icon .chrome-green {
-  fill: #34a853;
-}
-
-.chrome-icon .chrome-blue {
-  fill: #4285f4;
-}
-
-.chrome-icon .chrome-center {
-  fill: #fff;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 4;
 }
 
 .store-button:hover,
