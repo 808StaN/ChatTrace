@@ -162,11 +162,8 @@ h1 {
   width: 20px;
   height: 20px;
   flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 4;
+  fill: #fff;
+  stroke: #fff;
 }
 
 .store-button:hover,
