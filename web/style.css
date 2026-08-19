@@ -328,6 +328,11 @@ li span {
   padding-left: 20px;
 }
 
+.privacy-document li {
+  display: list-item;
+  margin-bottom: 8px;
+}
+
 .privacy-document code {
   color: #d5bcff;
 }
