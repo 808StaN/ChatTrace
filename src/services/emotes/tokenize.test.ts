@@ -20,7 +20,7 @@ describe('tokenizeMessage', () => {
         type: 'emote',
         alt: 'Kappa',
         provider: 'twitch',
-        url: 'https://static-cdn.jtvnw.net/emotes/v2/25/default/dark/1.0',
+        url: 'https://static-cdn.jtvnw.net/emoticons/v2/25/default/dark/1.0',
       },
       { type: 'text', text: ' ' },
       {

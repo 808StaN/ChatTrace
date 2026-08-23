@@ -2,7 +2,7 @@ import type { ChatEmote, ChatMessage } from '@/services/logs';
 import type { ExternalEmoteLookup, MessagePart } from './types';
 
 function twitchEmoteUrl(id: string): string {
-  return `https://static-cdn.jtvnw.net/emotes/v2/${encodeURIComponent(id)}/default/dark/1.0`;
+  return `https://static-cdn.jtvnw.net/emoticons/v2/${encodeURIComponent(id)}/default/dark/1.0`;
 }
 
 function appendTextParts(parts: MessagePart[], text: string, emotes: ExternalEmoteLookup): void {
