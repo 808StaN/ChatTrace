@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseLogsCommand } from './logsCommand';
+import { normalizeTwitchLogin, parseLogsCommand } from './logsCommand';
 
 describe('parseLogsCommand', () => {
   it('returns a normalized Twitch login from a logs command', () => {
@@ -19,5 +19,10 @@ describe('parseLogsCommand', () => {
   it('does not intercept other Twitch commands or regular chat messages', () => {
     expect(parseLogsCommand('/block user')).toBeNull();
     expect(parseLogsCommand('hello /logs user')).toBeNull();
+  });
+
+  it('normalizes a command argument supplied by Twitch', () => {
+    expect(normalizeTwitchLogin('@User_Name')).toBe('user_name');
+    expect(normalizeTwitchLogin('user-name')).toBeNull();
   });
 });
