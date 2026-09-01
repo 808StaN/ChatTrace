@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react';
+import type { CSSProperties, PointerEventHandler, RefObject } from 'react';
 import { useUserLogs } from '@/hooks/useUserLogs';
 import { useUserCardAnchor } from '@/hooks/useUserCardAnchor';
+import { useStandalonePanel } from '@/hooks/useStandalonePanel';
 import { useTwitchBadges } from '@/hooks/useTwitchBadges';
 import { useChatEmotes } from '@/hooks/useChatEmotes';
 import { getMessages } from '@/i18n/messages';
@@ -12,16 +14,37 @@ import { LogsList } from './LogsList';
 import { LogsSearch } from './LogsSearch';
 import { LoadingState } from './LoadingState';
 
-interface LogsPanelProps {
+interface SharedLogsPanelProps {
   channel: string;
   username: string;
-  anchor: Element;
-  dragTarget: HTMLElement;
   locale: string;
   onClose: () => void;
 }
 
-export function LogsPanel({ channel, username, anchor, dragTarget, locale, onClose }: LogsPanelProps) {
+interface LogsPanelProps extends SharedLogsPanelProps {
+  anchor: Element;
+  dragTarget: HTMLElement;
+}
+
+interface LogsPanelContentProps extends SharedLogsPanelProps {
+  panelStyle: CSSProperties;
+  panelRef?: RefObject<HTMLElement | null>;
+  onHeaderPointerDown: PointerEventHandler<HTMLElement>;
+  onHeaderPointerMove: PointerEventHandler<HTMLElement>;
+  onHeaderPointerUp: PointerEventHandler<HTMLElement>;
+}
+
+function LogsPanelContent({
+  channel,
+  username,
+  locale,
+  onClose,
+  panelStyle,
+  panelRef,
+  onHeaderPointerDown,
+  onHeaderPointerMove,
+  onHeaderPointerUp,
+}: LogsPanelContentProps) {
   const [query, setQuery] = useState('');
   const { messages, status, isLoadingOlder, canLoadOlder, retry, loadOlder } = useUserLogs(
     channel,
@@ -30,9 +53,6 @@ export function LogsPanel({ channel, username, anchor, dragTarget, locale, onClo
   const filteredMessages = filterMessages(messages, query);
   const badgeImages = useTwitchBadges(messages);
   const externalEmotes = useChatEmotes(messages);
-  const panelRef = useRef<HTMLElement>(null);
-  const { onHeaderPointerDown, onHeaderPointerMove, onHeaderPointerUp, panelStyle } =
-    useUserCardAnchor(anchor, dragTarget, panelRef);
   const t = getMessages(locale);
 
   return (
@@ -80,4 +100,15 @@ export function LogsPanel({ channel, username, anchor, dragTarget, locale, onClo
       </div>
     </aside>
   );
+}
+
+export function LogsPanel({ anchor, dragTarget, ...props }: LogsPanelProps) {
+  const panelRef = useRef<HTMLElement>(null);
+  const positioning = useUserCardAnchor(anchor, dragTarget, panelRef);
+  return <LogsPanelContent {...props} {...positioning} panelRef={panelRef} />;
+}
+
+export function StandaloneLogsPanel(props: SharedLogsPanelProps) {
+  const positioning = useStandalonePanel();
+  return <LogsPanelContent {...props} {...positioning} />;
 }

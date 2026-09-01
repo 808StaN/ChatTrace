@@ -1,24 +1,35 @@
 import { createRoot } from 'react-dom/client';
 import { useEffect, useState } from 'react';
-import { LogsPanel } from '@/components/LogsPanel';
+import { LogsPanel, StandaloneLogsPanel } from '@/components/LogsPanel';
 import { getCurrentChannel, observeCurrentChannel } from '@/twitch/getCurrentChannel';
 import { observeTwitchUserCards } from '@/twitch/observeUserCard';
+import { observeLogsCommand } from '@/twitch/observeLogsCommand';
 import { getTwitchLocale } from '@/twitch/getTwitchLocale';
 import '@/styles/twitch-theme.css';
 
-interface LogsContext {
+interface CardLogsContext {
+  kind: 'card';
   anchor: Element;
   dragTarget: HTMLElement;
   channel: string;
   username: string;
 }
 
+interface CommandLogsContext {
+  kind: 'command';
+  channel: string;
+  username: string;
+}
+
+type LogsContext = CardLogsContext | CommandLogsContext;
+
 function TwitchLogsApp() {
   const [context, setContext] = useState<LogsContext | null>(null);
   const [locale, setLocale] = useState(() => getTwitchLocale());
+  const cardAnchor = context?.kind === 'card' ? context.anchor : undefined;
 
   useEffect(() => {
-    const anchor = context?.anchor;
+    const anchor = cardAnchor;
     if (!anchor) {
       return;
     }
@@ -30,21 +41,32 @@ function TwitchLogsApp() {
         style.visibility === 'hidden' ||
         anchor.getClientRects().length === 0;
       if (!anchor.isConnected || isHidden) {
-        setContext((current) => (current?.anchor === anchor ? null : current));
+        setContext((current) =>
+          current?.kind === 'card' && current.anchor === anchor ? null : current,
+        );
       }
     };
 
     const observer = new MutationObserver(closeWhenCardIsGone);
     observer.observe(document.body, { attributes: true, childList: true, subtree: true });
     return () => observer.disconnect();
-  }, [context?.anchor]);
+  }, [cardAnchor]);
 
   useEffect(() => {
     const userCards = observeTwitchUserCards(locale, (username, anchor, dragTarget) => {
       const channel = getCurrentChannel();
       if (channel) {
-        setContext({ anchor, dragTarget, channel, username });
+        setContext({ kind: 'card', anchor, dragTarget, channel, username });
       }
+    });
+    const stopLogsCommandObserver = observeLogsCommand((username) => {
+      const channel = getCurrentChannel();
+      if (!channel) {
+        return false;
+      }
+
+      setContext({ kind: 'command', channel, username });
+      return true;
     });
     const stopChannelObserver = observeCurrentChannel((channel) => {
       setContext((current) => (current?.channel === channel ? current : null));
@@ -60,12 +82,17 @@ function TwitchLogsApp() {
 
     return () => {
       userCards.stop();
+      stopLogsCommandObserver();
       stopChannelObserver();
       langObserver.disconnect();
     };
   }, [locale]);
 
-  return context ? (
+  if (!context) {
+    return null;
+  }
+
+  return context.kind === 'card' ? (
     <LogsPanel
       key={`${context.channel}:${context.username}`}
       anchor={context.anchor}
@@ -75,7 +102,15 @@ function TwitchLogsApp() {
       locale={locale}
       onClose={() => setContext(null)}
     />
-  ) : null;
+  ) : (
+    <StandaloneLogsPanel
+      key={`${context.channel}:${context.username}`}
+      channel={context.channel}
+      username={context.username}
+      locale={locale}
+      onClose={() => setContext(null)}
+    />
+  );
 }
 
 export default defineContentScript({
