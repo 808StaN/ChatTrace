@@ -2,7 +2,7 @@
   "name": "chattrace-twitch-chat-history",
   "version": "1.1.0",
   "private": true,
-  "description": "View your own or other Twitch users' chat history directly on Twitch. Click a chatter or use /logs [username] to browse past messages.",
+  "description": "View your own or other users' chat history directly on Twitch. Click a chatter or use /logs [username] to browse past messages.",
   "type": "module",
   "scripts": {
     "dev": "wxt",
