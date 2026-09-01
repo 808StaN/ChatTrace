@@ -62,11 +62,10 @@ function TwitchLogsApp() {
     const stopLogsCommandObserver = observeLogsCommand((username) => {
       const channel = getCurrentChannel();
       if (!channel) {
-        return false;
+        return;
       }
 
       setContext({ kind: 'command', channel, username });
-      return true;
     });
     const stopChannelObserver = observeCurrentChannel((channel) => {
       setContext((current) => (current?.channel === channel ? current : null));
