@@ -6,14 +6,21 @@ const CHAT_COMPOSER = [
   'textarea[data-a-target="chat-input"]',
 ].join(', ');
 
-function clearComposer(composer: HTMLElement): void {
+function selectComposerText(composer: HTMLElement): void {
   if (composer instanceof HTMLTextAreaElement) {
-    composer.value = '';
-  } else {
-    composer.replaceChildren();
+    composer.select();
+    return;
   }
 
-  composer.dispatchEvent(new InputEvent('input', { bubbles: true, inputType: 'insertText' }));
+  const selection = window.getSelection();
+  if (!selection) {
+    return;
+  }
+
+  const range = document.createRange();
+  range.selectNodeContents(composer);
+  selection.removeAllRanges();
+  selection.addRange(range);
 }
 
 function getComposerText(composer: HTMLElement): string {
@@ -46,7 +53,8 @@ export function observeLogsCommand(onCommand: (username: string) => boolean): ()
 
     event.preventDefault();
     event.stopImmediatePropagation();
-    clearComposer(composer);
+    // Twitch owns this controlled editor. The next native edit replaces the selected command.
+    selectComposerText(composer);
   };
 
   window.addEventListener('keydown', onKeyDown, true);
