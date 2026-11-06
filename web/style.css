@@ -43,6 +43,52 @@ a {
   color: inherit;
 }
 
+.home-page {
+  position: relative;
+}
+
+.emote-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Decorative positions must not influence browser scroll restoration. */
+  overflow-anchor: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+.emote-background img {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: var(--size);
+  height: var(--size);
+  object-fit: contain;
+  opacity: 0;
+}
+
+.emote-background + .page-shell {
+  position: relative;
+}
+
+@keyframes emote-drift {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, var(--start-y)) rotate(var(--tilt)) scale(0.9);
+  }
+
+  15%,
+  65% {
+    opacity: 0.45;
+  }
+
+  85%,
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--drift)), var(--end-y)) rotate(0deg) scale(1.05);
+  }
+}
+
 .page-shell {
   width: min(1120px, calc(100% - 40px));
   min-height: 100vh;
@@ -365,6 +411,10 @@ li span {
 }
 
 @media (max-width: 760px) {
+  .emote-background img:nth-child(even) {
+    display: none;
+  }
+
   .page-shell {
     width: min(100% - 28px, 620px);
     padding-top: 18px;
@@ -397,6 +447,10 @@ li span {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .emote-background[data-ready] img {
+    animation: emote-drift var(--duration) ease-in-out var(--delay) infinite;
+  }
+
   .trace-card {
     transition: transform 180ms ease;
   }
