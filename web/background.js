@@ -1,5 +1,18 @@
 const background = document.querySelector('.emote-background');
 const emotes = [...background.querySelectorAll('img')];
+const emoteSources = [
+  'emotes/kappa.png',
+  'emotes/peepo-happy.webp',
+  'emotes/pogchamp.png',
+  'emotes/ez.webp',
+  'emotes/lul.png',
+  'emotes/feels-okay-man.webp',
+  'emotes/4head.png',
+  'emotes/seems-good.png',
+  'emotes/monkas.png',
+  'emotes/kekw.png',
+  'emotes/omegalul.png',
+];
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const mobile = window.matchMedia('(max-width: 760px)');
 const occupied = new Map();
@@ -44,6 +57,11 @@ function placeEmote(emote) {
   emote.style.visibility = position ? 'visible' : 'hidden';
   if (!position) return;
 
+  const usedSources = new Set([...occupied.keys()].map((image) => image.getAttribute('src')));
+  const availableSources = emoteSources.filter(
+    (source) => !usedSources.has(source) && source !== emote.getAttribute('src'),
+  );
+  emote.src = availableSources[Math.floor(Math.random() * availableSources.length)];
   occupied.set(emote, position.area);
   emote.style.setProperty('--x', `${position.x}px`);
   emote.style.setProperty('--y', `${position.y}px`);
@@ -77,8 +95,13 @@ function updateLayout() {
   background.setAttribute('data-ready', '');
 }
 
+emoteSources.forEach((source) => {
+  const image = new Image();
+  image.src = source;
+});
+
 emotes.forEach((emote) => {
-  const duration = 14 + Math.random() * 8;
+  const duration = 7 + Math.random() * 4;
   emote.style.setProperty('--duration', `${duration}s`);
   emote.style.setProperty('--delay', `${-Math.random() * duration * 0.8}s`);
   emote.addEventListener('animationiteration', () => placeEmote(emote));
