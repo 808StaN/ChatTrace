@@ -731,30 +731,11 @@ h1 {
     10px 12px 0 rgba(43, 11, 98, 0.32);
 }
 
-.privacy-badge {
-  display: inline-block;
-  margin: 0 0 14px;
-  padding: 4px 9px;
-  border-radius: 5px;
-  background: var(--accent-lime);
-  color: var(--ink-dark);
-  font-size: 11px;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .privacy-document h1 {
   max-width: none;
   margin-bottom: 10px;
   font-size: clamp(36px, 5vw, 54px);
   line-height: 1.05;
-}
-
-.privacy-updated {
-  margin-bottom: 32px;
-  color: #a69ec2;
-  font-size: 14px;
 }
 
 .privacy-document h2 {
@@ -770,6 +751,26 @@ h1 {
   color: #dad4ee;
   font-size: 15.5px;
   line-height: 1.65;
+}
+
+.privacy-document .privacy-badge {
+  display: inline-block;
+  margin: 0 0 14px;
+  padding: 5px 9px;
+  border-radius: 5px;
+  background: var(--accent-lime);
+  color: var(--ink-dark);
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.privacy-document .privacy-updated {
+  margin-bottom: 32px;
+  color: #a69ec2;
+  font-size: 14px;
 }
 
 .privacy-document ul {
