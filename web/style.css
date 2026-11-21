@@ -111,10 +111,11 @@ a {
   text-decoration: none;
 }
 
-.brand-bubble {
-  width: 31px;
-  height: 31px;
+.brand-mark {
+  width: 34px;
+  height: 34px;
   flex: none;
+  object-fit: contain;
 }
 
 .brand-name {
@@ -850,9 +851,9 @@ h1 {
     gap: 14px;
   }
 
-  .brand-bubble {
-    width: 28px;
-    height: 28px;
+  .brand-mark {
+    width: 30px;
+    height: 30px;
   }
 
   .brand-name {
