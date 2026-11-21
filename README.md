@@ -1,5 +1,7 @@
 # ChatTrace - Chat History for Twitch
 
+![ChatTrace - Chat History for Twitch](docs/ChatTrace.jpg)
+
 View your own or other Twitch users' chat history directly on Twitch. Click a chatter, choose **Logs** from their normal Twitch user card, and browse past messages without leaving Twitch.
 
 ## Stack
