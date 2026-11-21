@@ -30,6 +30,7 @@
 
 html {
   overflow-x: clip;
+  scrollbar-gutter: stable;
   scrollbar-color: #a970ff #6827e7;
   scrollbar-width: thin;
 }
@@ -146,9 +147,11 @@ a {
 
 .nav-link {
   position: relative;
+  display: inline-block;
   color: rgba(255, 255, 255, 0.94);
   font-size: 15.5px;
   font-weight: 700;
+  line-height: 1.4;
   text-decoration: none;
 }
 
@@ -157,12 +160,14 @@ a {
   right: 0;
   bottom: -4px;
   left: 0;
-  height: 1.5px;
+  height: 2px;
+  border-radius: 999px;
   background: var(--accent-lime);
   content: '';
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 220ms ease;
+  will-change: transform;
 }
 
 .nav-link:hover::after,
@@ -726,7 +731,7 @@ h1 {
 
 /* Privacy Policy Page */
 .privacy-page .page-shell {
-  max-width: 1010px;
+  justify-content: flex-start;
 }
 
 .privacy-document {
@@ -804,12 +809,52 @@ h1 {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 16px 28px;
   margin-top: auto;
   padding-top: 22px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
   color: #e4dbff;
   font-size: 14.5px;
+}
+
+.home-page .site-footer {
+  margin-top: 26px;
+}
+
+.footer-meta {
+  display: grid;
+  gap: 3px;
+}
+
+.footer-credit {
+  margin: 0;
+  color: #f4f1ff;
+  font-size: 14.5px;
+  font-weight: 650;
+}
+
+.footer-author {
+  color: var(--accent-lime);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.footer-author:hover,
+.footer-author:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-author:focus-visible {
+  outline: 2px solid var(--accent-lime);
+  outline-offset: 3px;
+}
+
+.footer-disclaimer {
+  margin: 0;
+  color: rgba(235, 226, 255, 0.78);
+  font-size: 13px;
+  line-height: 1.45;
 }
 
 .footer-links {
@@ -821,7 +866,6 @@ h1 {
 
 /* How It Works Page */
 .how-page .page-shell {
-  max-width: 1180px;
   justify-content: flex-start;
 }
 
