@@ -228,6 +228,7 @@ a {
   font-weight: 750;
   letter-spacing: 0.11em;
   text-transform: uppercase;
+  transform: rotate(-1.4deg);
 }
 
 .eyebrow-sparkles {
