@@ -39,9 +39,9 @@ if (background && card) {
     occupied.delete(emote);
     if (!perimeterBands.length || getComputedStyle(emote).display === 'none') return;
 
-    const size = mobile.matches ? 38 + Math.random() * 8 : 50 + Math.random() * 14;
+    const size = mobile.matches ? 38 + Math.random() * 8 : 56 + Math.random() * 16;
     const half = size * 0.5;
-    const spacingPad = mobile.matches ? 10 : 18;
+    const spacingPad = mobile.matches ? 10 : 14;
     const blocked = [...protectedAreas, ...occupied.values()];
     let chosen = null;
 
@@ -120,8 +120,8 @@ if (background && card) {
       height: cardRect.height,
     };
 
-    const outX = mobile.matches ? 16 : 30;
-    const outY = mobile.matches ? 22 : 28;
+    const outX = mobile.matches ? 16 : 34;
+    const outY = mobile.matches ? 22 : 32;
 
     perimeterBands = [
       // Top-left rim (left of the callout badge)
