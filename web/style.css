@@ -256,19 +256,29 @@ h1 {
   position: relative;
   z-index: 0;
   display: inline-block;
-  margin-left: 2px;
-  padding: 0 11px;
+  margin-left: 0.04em;
+  padding: 0 0.21em 0 0.1em;
   color: var(--ink-dark);
 }
 
 .title-highlight::before {
   position: absolute;
-  inset: 3% 0 9%;
+  inset: 10% 0 -6%;
   z-index: -1;
-  border-radius: 5px;
+  border-radius: 0.09em;
   background: var(--accent-lime);
   content: '';
-  transform: rotate(-1.6deg);
+  transform: rotate(-1.5deg);
+}
+
+@supports (text-box: trim-both cap alphabetic) {
+  .title-highlight {
+    text-box: trim-both cap alphabetic;
+  }
+
+  .title-highlight::before {
+    inset: -0.07em 0 -0.13em;
+  }
 }
 
 .lede {
