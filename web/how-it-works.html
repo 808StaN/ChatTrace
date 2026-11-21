@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Learn how ChatTrace works on Twitch: open any chatter's message history from their user card or with /logs [username], search messages, view 7TV/BTTV/FFZ emotes, and stay private by default."
+    />
+    <title>How It Works - ChatTrace for Twitch</title>
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="how-page">
+    <div class="ambient-glow" aria-hidden="true"></div>
+
+    <main class="page-shell">
+      <header class="site-header">
+        <a class="brand" href="index.html" aria-label="ChatTrace home">
+          <img class="brand-mark" src="icon.png" alt="" />
+          <span class="brand-name">ChatTrace</span>
+          <span class="brand-badge">FOR TWITCH</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="how-it-works.html" aria-current="page">How it works</a>
+          <a class="nav-link" href="privacy-policy.html">Privacy policy</a>
+          <a
+            class="header-cta"
+            href="https://chromewebstore.google.com/detail/dggjcoekkmkggklmppkfbjkopmndlbhn?utm_source=item-share-cb"
+          >
+            <span>Install extension</span>
+            <svg class="icon-arrow-up-right" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </nav>
+      </header>
+
+      <section class="how-hero" aria-labelledby="how-page-title">
+        <p class="eyebrow-pill">
+          <span>INSIDE THE EXTENSION</span>
+          <svg class="eyebrow-sparkles" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path
+              d="M10.5 2.2 12 6.8l4.6 1.5L12 9.8l-1.5 4.6L9 9.8 4.4 8.3 9 6.8l1.5-4.6Z"
+              fill="#ffd84d"
+            />
+            <path
+              d="M16.2 12.2 17 14.5l2.3.8-2.3.8-.8 2.3-.8-2.3-2.3-.8 2.3-.8.8-2.3Z"
+              fill="#ffe985"
+            />
+          </svg>
+        </p>
+
+        <h1 id="how-page-title">
+          From live chat to full <span class="title-highlight">context</span> in seconds.
+        </h1>
+
+        <p class="lede how-lede">
+          ChatTrace runs directly inside Twitch so you never lose your place on stream. Click any
+          chatter to open their user card or type <code>/logs [username]</code> in chat to browse,
+          search, and read past messages right where the conversation happens.
+        </p>
+
+        <ul class="feature-pills" aria-label="ChatTrace highlights">
+          <li class="feature-pill">
+            <svg class="pill-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M4.5 3h11A1.5 1.5 0 0 1 17 4.5v8.2a1.5 1.5 0 0 1-.44 1.06l-2.3 2.3a1.5 1.5 0 0 1-1.06.44H9.4l-2.65 2.2a.6.6 0 0 1-.98-.46V16.5H4.5A1.5 1.5 0 0 1 3 15V4.5A1.5 1.5 0 0 1 4.5 3Z"
+                fill="#ffffff"
+              />
+              <rect x="8.1" y="6.6" width="1.7" height="4.6" rx="0.8" fill="#6f2cf0" />
+              <rect x="11.8" y="6.6" width="1.7" height="4.6" rx="0.8" fill="#6f2cf0" />
+            </svg>
+            <span>User card &amp; /logs command</span>
+          </li>
+
+          <li class="feature-pill">
+            <svg class="pill-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="7" stroke="#c8fb51" stroke-width="2" />
+              <path
+                d="M7.2 8.4h.01M12.8 8.4h.01M7.3 12c.7.9 1.6 1.3 2.7 1.3s2-.4 2.7-1.3"
+                stroke="#c8fb51"
+                stroke-width="1.9"
+                stroke-linecap="round"
+              />
+            </svg>
+            <span>7TV, BTTV &amp; FFZ emotes</span>
+          </li>
+
+          <li class="feature-pill">
+            <svg class="pill-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path
+                d="M3.5 10h13M10 3.5c2 2.1 2 10.9 0 13m0-13c-2 2.1-2 10.9 0 13"
+                stroke="#c8fb51"
+                stroke-width="1.8"
+                stroke-linecap="round"
+              />
+              <circle cx="10" cy="10" r="6.8" stroke="#c8fb51" stroke-width="1.8" />
+            </svg>
+            <span>English &amp; Polish UI</span>
+          </li>
+
+          <li class="feature-pill">
+            <svg class="pill-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <rect x="4" y="8.8" width="12" height="8.7" rx="2.4" fill="#c8fb51" />
+              <path
+                d="M7 8.8V6.6a3 3 0 1 1 6 0v2.2"
+                stroke="#c8fb51"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <circle cx="10" cy="13.1" r="1.25" fill="#161324" />
+            </svg>
+            <span>No registration</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="how-section" aria-labelledby="ways-title">
+        <div class="section-heading">
+          <span class="section-kicker">TWO WAYS TO OPEN</span>
+          <h2 id="ways-title">Open history however you use chat</h2>
+          <p>
+            Whether someone just sent a message in live chat or you already know their username,
+            ChatTrace opens their channel history without leaving the stream.
+          </p>
+        </div>
+
+        <div class="methods-grid">
+          <article class="how-card method-card">
+            <div class="method-header">
+              <span class="method-badge">WAY 01 · CLICK IN CHAT</span>
+              <h3>From any Twitch user card</h3>
+              <p>
+                Click a chatter's username in Twitch chat (or your own) to open their normal viewer
+                card, then click <strong>Chat history</strong>. The history panel docks right beside
+                the card, moves with it when dragged, and closes automatically when you dismiss the
+                card.
+              </p>
+            </div>
+
+            <div class="mock-user-card" aria-hidden="true">
+              <div class="mock-user-top">
+                <span class="mock-avatar">P</span>
+                <div class="mock-user-meta">
+                  <strong>pixelpilot</strong>
+                  <span>Viewing in #streamer</span>
+                </div>
+              </div>
+              <div class="mock-user-actions">
+                <span class="mock-btn-muted">Follow</span>
+                <span class="mock-btn-muted">Gift a Sub</span>
+                <span class="mock-btn-accent">
+                  <svg viewBox="0 0 16 16" fill="none">
+                    <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.7" />
+                    <path
+                      d="M8 4.8v3.4l2.2 1.4"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Chat history
+                </span>
+              </div>
+            </div>
+          </article>
+
+          <article class="how-card method-card">
+            <div class="method-header">
+              <span class="method-badge">WAY 02 · SLASH COMMAND</span>
+              <h3>With the <code>/logs [username]</code> command</h3>
+              <p>
+                Don't want to scroll back looking for a message? Type
+                <code>/logs username</code> (or <code>/logs @username</code>) straight into the
+                Twitch chat input. ChatTrace registers directly in Twitch's native command menu and
+                opens a standalone, draggable history window.
+              </p>
+            </div>
+
+            <div class="mock-command-box" aria-hidden="true">
+              <div class="mock-command-popup">
+                <div class="mock-command-title">
+                  <code>/logs</code>
+                  <span class="mock-command-arg">[username]</span>
+                </div>
+                <span class="mock-command-desc">Open ChatTrace history for a user.</span>
+              </div>
+              <div class="mock-chat-input">
+                <span class="mock-typed"><strong>/logs</strong> pixelpilot</span>
+                <span class="mock-enter-key">Enter &crarr;</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-section" aria-labelledby="features-title">
+        <div class="section-heading">
+          <span class="section-kicker">INSIDE THE PANEL</span>
+          <h2 id="features-title">Built to feel native on Twitch</h2>
+          <p>
+            Every detail of the history panel is designed to match Twitch's dark interface and keep
+            fast-moving conversations readable.
+          </p>
+        </div>
+
+        <div class="capabilities-grid">
+          <article class="glass-feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="10.8" cy="10.8" r="6.3" stroke="currentColor" stroke-width="2.1" />
+                <path
+                  d="m15.6 15.6 4.4 4.4"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h3>Instant message search</h3>
+            <p>
+              Filter loaded messages in real time as you type to quickly jump to a specific topic,
+              question, or reaction in the current channel.
+            </p>
+          </article>
+
+          <article class="glass-feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect
+                  x="3.5"
+                  y="5"
+                  width="17"
+                  height="15.5"
+                  rx="3"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M3.5 9.5h17M8 3.2v3.2M16 3.2v3.2"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h3>Grouped by date &amp; paginated</h3>
+            <p>
+              Messages are sorted newest-first under clear day headers with timestamps, loaded in
+              fast 50-message pages with one-click <strong>Load older messages</strong> (up to 2,000
+              messages per view).
+            </p>
+          </article>
+
+          <article class="glass-feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="2" />
+                <path
+                  d="M8.6 10.2h.01M15.4 10.2h.01M8.5 14.3c.9 1.3 2.1 1.9 3.5 1.9s2.6-.6 3.5-1.9"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+            <h3>Badges &amp; 3rd-party emotes</h3>
+            <p>
+              Renders public Twitch channel badges alongside <strong>7TV</strong>,
+              <strong>BetterTTV</strong>, and <strong>FrankerFaceZ</strong> emotes so past messages
+              read just like live Twitch chat.
+            </p>
+          </article>
+
+          <article class="glass-feature-card">
+            <div class="feature-icon-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 3.5v17M3.5 12h17M12 3.5 9.3 6.2M12 3.5l2.7 2.7M12 20.5l-2.7-2.7M12 20.5l2.7-2.7M3.5 12l2.7-2.7M3.5 12l2.7 2.7M20.5 12l-2.7-2.7M20.5 12l-2.7 2.7"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <h3>Draggable &amp; bilingual</h3>
+            <p>
+              Grab the panel header to reposition it anywhere in the viewport. Labels automatically
+              follow your Twitch language in <strong>English</strong> and <strong>Polish</strong>.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-section" aria-labelledby="under-hood-title">
+        <div class="how-card architecture-card">
+          <div class="architecture-top">
+            <div>
+              <span class="method-badge">UNDER THE HOOD · PRIVACY FIRST</span>
+              <h2 id="under-hood-title">Direct from your browser. Zero ChatTrace servers.</h2>
+              <p class="architecture-lead">
+                ChatTrace does not run a bot, crawler, analytics tracker, or backend database.
+                Requests happen directly from your browser only when you open a chatter's history.
+              </p>
+            </div>
+          </div>
+
+          <ol class="flow-steps">
+            <li class="flow-step">
+              <span class="step-number" aria-hidden="true">1</span>
+              <div>
+                <strong>Read channel &amp; chatter</strong>
+                <p>
+                  Detects the currently watched Twitch channel login and the username you clicked or
+                  passed to <code>/logs</code>.
+                </p>
+              </div>
+            </li>
+            <li class="flow-step">
+              <span class="step-number" aria-hidden="true">2</span>
+              <div>
+                <strong>Fetch public logs &amp; emotes</strong>
+                <p>
+                  Queries <code>logs.zonian.dev</code> for available public chat logs, plus
+                  <code>api.ivr.fi</code>, <code>7tv.io</code>, <code>api.betterttv.net</code>, and
+                  <code>api.frankerfacez.com</code> for badges and emotes.
+                </p>
+              </div>
+            </li>
+            <li class="flow-step">
+              <span class="step-number" aria-hidden="true">3</span>
+              <div>
+                <strong>Keep only in tab memory</strong>
+                <p>
+                  Loaded messages stay in a short-lived in-memory cache while the tab is open and
+                  are cleared as soon as you close or reload the page.
+                </p>
+              </div>
+            </li>
+          </ol>
+
+          <div class="good-to-know">
+            <h3>Good to know</h3>
+            <ul>
+              <li>
+                Chat history is available on channels covered by the public
+                <code>logs.zonian.dev</code> infrastructure.
+              </li>
+              <li>
+                Private whispers, unrecorded messages, or deleted messages are never collected and
+                cannot be recovered.
+              </li>
+              <li>
+                No remote code is downloaded or executed — all extension logic ships inside the
+                verified Chrome Web Store package. Read our
+                <a href="privacy-policy.html">Privacy policy</a> for full details.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-banner" aria-labelledby="cta-title">
+        <div class="cta-banner-copy">
+          <h2 id="cta-title">Ready to try ChatTrace on Twitch?</h2>
+          <p>Install in one click — no login, no setup, ready on your next stream.</p>
+        </div>
+        <div class="cta-banner-actions">
+          <a
+            class="store-button"
+            href="https://chromewebstore.google.com/detail/dggjcoekkmkggklmppkfbjkopmndlbhn?utm_source=item-share-cb"
+          >
+            <img class="chrome-icon" src="chrome.svg" alt="" width="28" height="28" />
+            <span>Get it on Chrome</span>
+            <svg class="icon-arrow-up-right" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path
+                d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+          <a class="secondary-button" href="index.html">
+            <span>Back to home</span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <span>ChatTrace for Twitch</span>
+        <div class="footer-links">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="how-it-works.html" aria-current="page">How it works</a>
+          <a class="nav-link" href="privacy-policy.html">Privacy policy</a>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
