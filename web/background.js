@@ -5,17 +5,17 @@ const callout = document.querySelector('.callout-badge');
 if (background && card) {
   const slots = [...background.querySelectorAll('.emote-slot')];
   const emoteSources = [
-    'emotes/kappa.png',
-    'emotes/peepo-happy.webp',
-    'emotes/pogchamp.png',
-    'emotes/ez.webp',
-    'emotes/lul.png',
-    'emotes/feels-okay-man.webp',
-    'emotes/4head.png',
-    'emotes/seems-good.png',
-    'emotes/monkas.png',
-    'emotes/kekw.png',
-    'emotes/omegalul.png',
+    'emotes/stickers/kappa.png',
+    'emotes/stickers/peepo-happy.png',
+    'emotes/stickers/pogchamp.png',
+    'emotes/stickers/ez.png',
+    'emotes/stickers/lul.png',
+    'emotes/stickers/feels-okay-man.png',
+    'emotes/stickers/4head.png',
+    'emotes/stickers/seems-good.png',
+    'emotes/stickers/monkas.png',
+    'emotes/stickers/kekw.png',
+    'emotes/stickers/omegalul.png',
   ];
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -40,7 +40,8 @@ if (background && card) {
     const img = slot.querySelector('img');
     if (!img || !perimeterBands.length || getComputedStyle(slot).display === 'none') return;
 
-    const size = mobile.matches ? 38 + Math.random() * 8 : 56 + Math.random() * 16;
+    const rawSize = mobile.matches ? 38 + Math.random() * 8 : 56 + Math.random() * 16;
+    const size = Math.round(rawSize / 2) * 2;
     const half = size * 0.5;
     const spacingPad = mobile.matches ? 10 : 14;
     let chosen = null;
@@ -98,11 +99,14 @@ if (background && card) {
     const tiltSign = Math.random() < 0.5 ? -1 : 1;
     const tiltDeg = (mobile.matches ? 5 : 7) + Math.random() * (mobile.matches ? 8 : 11);
 
-    slot.style.setProperty('--x', `${chosen.x}px`);
-    slot.style.setProperty('--y', `${chosen.y}px`);
+    slot.style.setProperty('--x', `${Math.round(chosen.x)}px`);
+    slot.style.setProperty('--y', `${Math.round(chosen.y)}px`);
     slot.style.setProperty('--size', `${size}px`);
     slot.style.setProperty('--tilt', `${tiltSign * tiltDeg}deg`);
-    slot.style.setProperty('--drift', `${(Math.random() - 0.5) * (mobile.matches ? 10 : 18)}px`);
+    slot.style.setProperty(
+      '--drift',
+      `${Math.round((Math.random() - 0.5) * (mobile.matches ? 10 : 18))}px`,
+    );
     slot.style.setProperty('--start-y', mobile.matches ? '7px' : '12px');
     slot.style.setProperty('--end-y', mobile.matches ? '-7px' : '-12px');
   }

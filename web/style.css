@@ -70,13 +70,6 @@ a {
   color: inherit;
 }
 
-.svg-defs {
-  position: absolute;
-  width: 0;
-  height: 0;
-  pointer-events: none;
-}
-
 .ambient-glow {
   position: fixed;
   inset: 0;
@@ -594,16 +587,19 @@ h1 {
   width: var(--size, 64px);
   height: var(--size, 64px);
   opacity: 0;
-  transform: translate(-50%, -50%) rotate(var(--tilt, 0deg));
+  backface-visibility: hidden;
+  transform: translate3d(-50%, -50%, 0) rotate(var(--tilt, 0deg));
   will-change: transform, opacity;
 }
 
 .emote-slot img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 160%;
+  height: 160%;
+  max-width: none;
+  margin: -30% 0 0 -30%;
   object-fit: contain;
-  filter: url(#sticker-outline);
+  outline: 1px solid transparent;
 }
 
 .emote-background[data-static] .emote-slot {
@@ -613,8 +609,8 @@ h1 {
 @keyframes emote-drift {
   0% {
     opacity: 0;
-    transform: translate(-50%, calc(-50% + var(--start-y, 10px))) rotate(var(--tilt, -8deg))
-      scale(0.82);
+    transform: translate3d(-50%, calc(-50% + var(--start-y, 10px)), 0) rotate(var(--tilt, -8deg))
+      scale3d(0.82, 0.82, 1);
   }
 
   16%,
@@ -625,8 +621,8 @@ h1 {
   90%,
   100% {
     opacity: 0;
-    transform: translate(calc(-50% + var(--drift, 10px)), calc(-50% + var(--end-y, -12px)))
-      rotate(calc(var(--tilt, -8deg) * -0.45)) scale(1);
+    transform: translate3d(calc(-50% + var(--drift, 10px)), calc(-50% + var(--end-y, -12px)), 0)
+      rotate(calc(var(--tilt, -8deg) * 0.35)) scale3d(0.999, 0.999, 1);
   }
 }
 

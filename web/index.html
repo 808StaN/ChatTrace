@@ -13,43 +13,6 @@
     <script src="background.js" defer></script>
   </head>
   <body class="home-page">
-    <svg class="svg-defs" aria-hidden="true" width="0" height="0">
-      <defs>
-        <filter
-          id="sticker-outline"
-          x="-40%"
-          y="-40%"
-          width="180%"
-          height="180%"
-          color-interpolation-filters="sRGB"
-        >
-          <feGaussianBlur in="SourceAlpha" stdDeviation="3.6" result="blurred" />
-          <feColorMatrix
-            in="blurred"
-            type="matrix"
-            values="0 0 0 0 1
-                    0 0 0 0 1
-                    0 0 0 0 1
-                    0 0 0 20 -1.2"
-            result="whiteBorder"
-          />
-          <feDropShadow
-            in="whiteBorder"
-            dx="0"
-            dy="7"
-            stdDeviation="5"
-            flood-color="#23084e"
-            flood-opacity="0.44"
-            result="shadowedBorder"
-          />
-          <feMerge>
-            <feMergeNode in="shadowedBorder" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-    </svg>
-
     <div class="ambient-glow" aria-hidden="true"></div>
 
     <main class="page-shell">
@@ -330,15 +293,23 @@
           </div>
 
           <div class="emote-background" aria-hidden="true">
-            <span class="emote-slot"><img src="emotes/kappa.png" alt="" draggable="false" /></span>
-            <span class="emote-slot"><img src="emotes/ez.webp" alt="" draggable="false" /></span>
             <span class="emote-slot">
-              <img src="emotes/peepo-happy.webp" alt="" draggable="false" />
+              <img src="emotes/stickers/kappa.png" alt="" draggable="false" />
             </span>
-            <span class="emote-slot"><img src="emotes/lul.png" alt="" draggable="false" /></span>
-            <span class="emote-slot"><img src="emotes/kekw.png" alt="" draggable="false" /></span>
             <span class="emote-slot">
-              <img src="emotes/feels-okay-man.webp" alt="" draggable="false" />
+              <img src="emotes/stickers/ez.png" alt="" draggable="false" />
+            </span>
+            <span class="emote-slot">
+              <img src="emotes/stickers/peepo-happy.png" alt="" draggable="false" />
+            </span>
+            <span class="emote-slot">
+              <img src="emotes/stickers/lul.png" alt="" draggable="false" />
+            </span>
+            <span class="emote-slot">
+              <img src="emotes/stickers/kekw.png" alt="" draggable="false" />
+            </span>
+            <span class="emote-slot">
+              <img src="emotes/stickers/feels-okay-man.png" alt="" draggable="false" />
             </span>
           </div>
         </div>
