@@ -244,37 +244,31 @@ p {
 
 h1 {
   max-width: 600px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   color: #fff;
-  font-size: clamp(44px, 5.1vw, 66px);
+  font-size: clamp(42px, 5vw, 64px);
   font-weight: 850;
-  letter-spacing: -0.045em;
-  line-height: 1.06;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
 }
 
 .title-highlight {
   position: relative;
+  z-index: 0;
   display: inline-block;
-  margin-left: 4px;
-}
-
-.title-highlight-box {
-  display: inline-block;
-  padding: 0 13px 5px;
-  border-radius: 7px;
-  background: var(--accent-lime);
+  margin-left: 2px;
+  padding: 0 11px;
   color: var(--ink-dark);
-  line-height: 1.02;
-  transform: rotate(-1.5deg);
 }
 
-.highlight-rays {
+.title-highlight::before {
   position: absolute;
-  top: -28px;
-  left: 6px;
-  width: 44px;
-  height: 25px;
-  pointer-events: none;
+  inset: 3% 0 9%;
+  z-index: -1;
+  border-radius: 5px;
+  background: var(--accent-lime);
+  content: '';
+  transform: rotate(-1.6deg);
 }
 
 .lede {
@@ -743,6 +737,7 @@ h1 {
   max-width: none;
   margin-bottom: 10px;
   font-size: clamp(36px, 5vw, 54px);
+  line-height: 1.05;
 }
 
 .privacy-updated {
@@ -845,12 +840,6 @@ h1 {
 
   .hero {
     padding: 24px 0 34px;
-  }
-
-  .highlight-rays {
-    top: -22px;
-    width: 36px;
-    height: 20px;
   }
 
   .hero-showcase {
