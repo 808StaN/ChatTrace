@@ -336,8 +336,8 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  padding: 14px 22px;
-  border: 1.5px solid rgba(255, 255, 255, 0.48);
+  padding: 13px 22px;
+  border: 2.5px solid rgba(255, 255, 255, 0.72);
   border-radius: 11px;
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
@@ -352,8 +352,8 @@ h1 {
 
 .secondary-button:hover,
 .secondary-button:focus-visible {
-  border-color: rgba(255, 255, 255, 0.82);
-  background: rgba(255, 255, 255, 0.15);
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.16);
   transform: translateY(-1px);
 }
 
@@ -377,11 +377,11 @@ h1 {
 .feature-pill {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 10px 15px;
-  border: 1px solid var(--glass-stroke);
-  border-radius: 11px;
-  background: var(--glass-fill);
+  gap: 10px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 10px rgba(42, 10, 98, 0.16);
   color: #fff;
   font-size: 13px;
   font-weight: 700;
