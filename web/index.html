@@ -186,7 +186,7 @@
         <div class="hero-showcase">
           <svg
             class="showcase-backdrop"
-            viewBox="0 0 786 618"
+            viewBox="0 0 804 636"
             fill="none"
             aria-hidden="true"
             preserveAspectRatio="xMidYMid meet"
@@ -194,21 +194,21 @@
             <defs>
               <path
                 id="showcase-blob-shape"
-                d="M98 18C162 23 210 62 258 66C312 70 372 58 432 64C498 71 726 152 732 212C738 268 646 296 644 336C642 378 728 424 734 478C740 534 564 566 418 552C282 539 182 492 164 430C148 375 68 348 64 304C60 260 78 234 74 206C68 170 20 128 16 78C12 24 44 14 98 18Z"
+                d="M116 14C178 16 214 82 264 84C316 86 376 32 434 34C494 36 532 96 582 98C656 100 748 126 752 206C755 268 696 298 694 344C692 392 746 434 748 488C750 556 686 596 608 594C540 592 474 558 408 558C342 558 264 604 184 602C98 600 52 548 54 468C56 396 130 336 128 268C126 204 30 168 26 108C22 46 58 12 116 14Z"
               />
 
               <linearGradient
                 id="blobLavenderMain"
-                x1="28"
-                y1="22"
-                x2="720"
-                y2="528"
+                x1="18"
+                y1="14"
+                x2="760"
+                y2="560"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stop-color="#cfa4ff" stop-opacity="0.78" />
-                <stop offset="34%" stop-color="#b47eff" stop-opacity="0.64" />
-                <stop offset="70%" stop-color="#9c62fd" stop-opacity="0.54" />
-                <stop offset="100%" stop-color="#884bf4" stop-opacity="0.48" />
+                <stop offset="0%" stop-color="#d2a8ff" stop-opacity="0.8" />
+                <stop offset="36%" stop-color="#b57fff" stop-opacity="0.66" />
+                <stop offset="72%" stop-color="#9c62fd" stop-opacity="0.56" />
+                <stop offset="100%" stop-color="#884bf4" stop-opacity="0.5" />
               </linearGradient>
 
               <radialGradient
@@ -217,50 +217,15 @@
                 cy="0"
                 r="1"
                 gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(96 76) rotate(28) scale(230 170)"
+                gradientTransform="translate(86 68) rotate(32) scale(260 190)"
               >
-                <stop offset="0%" stop-color="#e5cbff" stop-opacity="0.46" />
-                <stop offset="55%" stop-color="#c996ff" stop-opacity="0.18" />
+                <stop offset="0%" stop-color="#e8d0ff" stop-opacity="0.48" />
+                <stop offset="55%" stop-color="#cb99ff" stop-opacity="0.18" />
                 <stop offset="100%" stop-color="#b47eff" stop-opacity="0" />
-              </radialGradient>
-
-              <radialGradient
-                id="topLeftDiffusedAura"
-                cx="0"
-                cy="0"
-                r="1"
-                gradientUnits="userSpaceOnUse"
-                gradientTransform="translate(92 74) rotate(24) scale(145 108)"
-              >
-                <stop offset="0%" stop-color="#dcbaff" stop-opacity="0.38" />
-                <stop offset="100%" stop-color="#b57eff" stop-opacity="0" />
               </radialGradient>
 
               <filter id="blobContourShadow" x="-20%" y="-20%" width="145%" height="145%">
                 <feGaussianBlur stdDeviation="8" />
-              </filter>
-
-              <linearGradient
-                id="orbitRibbonFill"
-                x1="36"
-                y1="452"
-                x2="760"
-                y2="332"
-                gradientUnits="userSpaceOnUse"
-              >
-                <stop offset="0%" stop-color="#e3bdff" stop-opacity="0.98" />
-                <stop offset="22%" stop-color="#c38dff" stop-opacity="0.84" />
-                <stop offset="50%" stop-color="#a569fc" stop-opacity="0.5" />
-                <stop offset="78%" stop-color="#cb96ff" stop-opacity="0.88" />
-                <stop offset="100%" stop-color="#e6c4ff" stop-opacity="0.98" />
-              </linearGradient>
-
-              <filter id="orbitOuterGlow" x="-15%" y="-35%" width="130%" height="170%">
-                <feGaussianBlur stdDeviation="6" result="blur" />
-                <feMerge>
-                  <feMergeNode in="blur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
               </filter>
             </defs>
 
@@ -273,29 +238,9 @@
               filter="url(#blobContourShadow)"
             />
 
-            <!-- Soft top-left diffused lavender melt -->
-            <ellipse
-              cx="92"
-              cy="74"
-              rx="145"
-              ry="108"
-              transform="rotate(24 92 74)"
-              fill="url(#topLeftDiffusedAura)"
-            />
-
-            <!-- Main fluid lavender blob -->
+            <!-- Main angular-organic lavender blob -->
             <use href="#showcase-blob-shape" fill="url(#blobLavenderMain)" />
             <use href="#showcase-blob-shape" fill="url(#blobTopLeftMelt)" />
-
-            <!-- Glowing 3D tilted elliptical swoosh ribbon -->
-            <g transform="translate(400 388) rotate(-9.5)" filter="url(#orbitOuterGlow)">
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M-358 0A358 58 0 1 0 358 0A358 58 0 1 0 -358 0ZM-347 -3A347 50 0 1 0 347 -3A347 50 0 1 0 -347 -3Z"
-                fill="url(#orbitRibbonFill)"
-              />
-            </g>
           </svg>
 
           <div class="callout-badge" aria-hidden="true">

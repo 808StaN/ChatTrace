@@ -406,9 +406,9 @@ h1 {
 
 .showcase-backdrop {
   position: absolute;
-  inset: -72px -64px -56px -88px;
-  width: calc(100% + 152px);
-  height: calc(100% + 128px);
+  inset: -78px -74px -68px -96px;
+  width: calc(100% + 170px);
+  height: calc(100% + 146px);
   overflow: visible;
   pointer-events: none;
   z-index: 0;
@@ -910,9 +910,9 @@ h1 {
   }
 
   .showcase-backdrop {
-    inset: -32px -18px -26px -26px;
-    width: calc(100% + 44px);
-    height: calc(100% + 58px);
+    inset: -36px -22px -32px -30px;
+    width: calc(100% + 52px);
+    height: calc(100% + 68px);
   }
 
   .emote-background {
