@@ -584,20 +584,26 @@ h1 {
   user-select: none;
 }
 
-.emote-background img {
+.emote-slot {
   position: absolute;
   top: var(--y, 0);
   left: var(--x, 0);
-  width: var(--size, 58px);
-  height: var(--size, 58px);
-  object-fit: contain;
-  filter: url(#sticker-outline);
+  width: var(--size, 64px);
+  height: var(--size, 64px);
   opacity: 0;
   transform: translate(-50%, -50%) rotate(var(--tilt, 0deg));
   will-change: transform, opacity;
 }
 
-.emote-background[data-static] img {
+.emote-slot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: url(#sticker-outline);
+}
+
+.emote-background[data-static] .emote-slot {
   opacity: 0.96;
 }
 
@@ -605,7 +611,7 @@ h1 {
   0% {
     opacity: 0;
     transform: translate(-50%, calc(-50% + var(--start-y, 10px))) rotate(var(--tilt, -8deg))
-      scale(0.84);
+      scale(0.82);
   }
 
   16%,
@@ -617,7 +623,7 @@ h1 {
   100% {
     opacity: 0;
     transform: translate(calc(-50% + var(--drift, 10px)), calc(-50% + var(--end-y, -12px)))
-      rotate(calc(var(--tilt, -8deg) * -0.45)) scale(1.04);
+      rotate(calc(var(--tilt, -8deg) * -0.45)) scale(1);
   }
 }
 
@@ -830,7 +836,7 @@ h1 {
 }
 
 @media (max-width: 760px) {
-  .emote-background img:nth-child(n + 5) {
+  .emote-slot:nth-child(n + 5) {
     display: none;
   }
 
@@ -943,7 +949,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .emote-background[data-ready] img {
+  .emote-background[data-ready] .emote-slot {
     animation: emote-drift var(--duration) ease-in-out var(--delay) infinite;
   }
 

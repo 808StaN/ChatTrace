@@ -3,7 +3,7 @@ const card = document.querySelector('.trace-card');
 const callout = document.querySelector('.callout-badge');
 
 if (background && card) {
-  const emotes = [...background.querySelectorAll('img')];
+  const slots = [...background.querySelectorAll('.emote-slot')];
   const emoteSources = [
     'emotes/kappa.png',
     'emotes/peepo-happy.webp',
@@ -35,14 +35,14 @@ if (background && card) {
     return Math.min(Math.max(value, min), max);
   }
 
-  function placeEmote(emote, preferredBandIndex) {
-    occupied.delete(emote);
-    if (!perimeterBands.length || getComputedStyle(emote).display === 'none') return;
+  function placeEmote(slot, preferredBandIndex) {
+    occupied.delete(slot);
+    const img = slot.querySelector('img');
+    if (!img || !perimeterBands.length || getComputedStyle(slot).display === 'none') return;
 
     const size = mobile.matches ? 38 + Math.random() * 8 : 56 + Math.random() * 16;
     const half = size * 0.5;
     const spacingPad = mobile.matches ? 10 : 14;
-    const blocked = [...protectedAreas, ...occupied.values()];
     let chosen = null;
 
     for (let attempt = 0; attempt < 320; attempt += 1) {
@@ -74,34 +74,37 @@ if (background && card) {
       const hitsProtected = protectedAreas.some((zone) => overlaps(centerBox, zone));
       const hitsOtherEmote = [...occupied.values()].some((zone) => overlaps(spacingBox, zone));
 
-      if (!hitsProtected && !hitsOtherEmote && blocked.length >= 0) {
+      if (!hitsProtected && !hitsOtherEmote) {
         chosen = { x, y, spacingBox };
         break;
       }
     }
 
-    emote.style.visibility = chosen ? 'visible' : 'hidden';
+    slot.style.visibility = chosen ? 'visible' : 'hidden';
     if (!chosen) return;
 
-    const usedSources = new Set([...occupied.keys()].map((img) => img.getAttribute('src')));
+    const usedSources = new Set(
+      [...occupied.keys()].map((el) => el.querySelector('img')?.getAttribute('src')),
+    );
+    const currentSrc = img.getAttribute('src');
     const availableSources = emoteSources.filter(
-      (source) => !usedSources.has(source) && source !== emote.getAttribute('src'),
+      (source) => !usedSources.has(source) && source !== currentSrc,
     );
     if (availableSources.length > 0) {
-      emote.src = availableSources[Math.floor(Math.random() * availableSources.length)];
+      img.src = availableSources[Math.floor(Math.random() * availableSources.length)];
     }
 
-    occupied.set(emote, chosen.spacingBox);
+    occupied.set(slot, chosen.spacingBox);
     const tiltSign = Math.random() < 0.5 ? -1 : 1;
     const tiltDeg = (mobile.matches ? 5 : 7) + Math.random() * (mobile.matches ? 8 : 11);
 
-    emote.style.setProperty('--x', `${chosen.x}px`);
-    emote.style.setProperty('--y', `${chosen.y}px`);
-    emote.style.setProperty('--size', `${size}px`);
-    emote.style.setProperty('--tilt', `${tiltSign * tiltDeg}deg`);
-    emote.style.setProperty('--drift', `${(Math.random() - 0.5) * (mobile.matches ? 10 : 18)}px`);
-    emote.style.setProperty('--start-y', mobile.matches ? '7px' : '12px');
-    emote.style.setProperty('--end-y', mobile.matches ? '-7px' : '-12px');
+    slot.style.setProperty('--x', `${chosen.x}px`);
+    slot.style.setProperty('--y', `${chosen.y}px`);
+    slot.style.setProperty('--size', `${size}px`);
+    slot.style.setProperty('--tilt', `${tiltSign * tiltDeg}deg`);
+    slot.style.setProperty('--drift', `${(Math.random() - 0.5) * (mobile.matches ? 10 : 18)}px`);
+    slot.style.setProperty('--start-y', mobile.matches ? '7px' : '12px');
+    slot.style.setProperty('--end-y', mobile.matches ? '-7px' : '-12px');
   }
 
   function updateLayout() {
@@ -161,7 +164,6 @@ if (background && card) {
       },
     ];
 
-    // Protect chat text inside the card and the callout badge above it.
     protectedAreas = [
       {
         left: relCard.left + 16,
@@ -182,7 +184,7 @@ if (background && card) {
     }
 
     occupied.clear();
-    emotes.forEach((emote, index) => placeEmote(emote, index));
+    slots.forEach((slot, index) => placeEmote(slot, index));
 
     if (reducedMotion.matches) {
       background.removeAttribute('data-ready');
@@ -198,11 +200,11 @@ if (background && card) {
     image.src = source;
   });
 
-  emotes.forEach((emote, index) => {
+  slots.forEach((slot, index) => {
     const duration = 6.5 + Math.random() * 3.5;
-    emote.style.setProperty('--duration', `${duration}s`);
-    emote.style.setProperty('--delay', `${-Math.random() * duration * 0.85}s`);
-    emote.addEventListener('animationiteration', () => placeEmote(emote, index));
+    slot.style.setProperty('--duration', `${duration}s`);
+    slot.style.setProperty('--delay', `${-Math.random() * duration * 0.85}s`);
+    slot.addEventListener('animationiteration', () => placeEmote(slot, index));
   });
 
   reducedMotion.addEventListener('change', updateLayout);

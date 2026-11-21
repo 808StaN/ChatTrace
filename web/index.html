@@ -17,19 +17,22 @@
       <defs>
         <filter
           id="sticker-outline"
-          x="-35%"
-          y="-35%"
-          width="170%"
-          height="170%"
+          x="-40%"
+          y="-40%"
+          width="180%"
+          height="180%"
           color-interpolation-filters="sRGB"
         >
-          <feMorphology in="SourceAlpha" operator="dilate" radius="3.6" result="spread" />
-          <feGaussianBlur in="spread" stdDeviation="1.2" result="smoothed" />
-          <feComponentTransfer in="smoothed" result="stickerCut">
-            <feFuncA type="table" tableValues="0 0 1 1 1 1 1" />
-          </feComponentTransfer>
-          <feFlood flood-color="#ffffff" result="whiteFill" />
-          <feComposite in="whiteFill" in2="stickerCut" operator="in" result="whiteBorder" />
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3.6" result="blurred" />
+          <feColorMatrix
+            in="blurred"
+            type="matrix"
+            values="0 0 0 0 1
+                    0 0 0 0 1
+                    0 0 0 0 1
+                    0 0 0 20 -1.2"
+            result="whiteBorder"
+          />
           <feDropShadow
             in="whiteBorder"
             dx="0"
@@ -358,12 +361,16 @@
           </div>
 
           <div class="emote-background" aria-hidden="true">
-            <img src="emotes/kappa.png" alt="" draggable="false" />
-            <img src="emotes/ez.webp" alt="" draggable="false" />
-            <img src="emotes/peepo-happy.webp" alt="" draggable="false" />
-            <img src="emotes/lul.png" alt="" draggable="false" />
-            <img src="emotes/kekw.png" alt="" draggable="false" />
-            <img src="emotes/feels-okay-man.webp" alt="" draggable="false" />
+            <span class="emote-slot"><img src="emotes/kappa.png" alt="" draggable="false" /></span>
+            <span class="emote-slot"><img src="emotes/ez.webp" alt="" draggable="false" /></span>
+            <span class="emote-slot">
+              <img src="emotes/peepo-happy.webp" alt="" draggable="false" />
+            </span>
+            <span class="emote-slot"><img src="emotes/lul.png" alt="" draggable="false" /></span>
+            <span class="emote-slot"><img src="emotes/kekw.png" alt="" draggable="false" /></span>
+            <span class="emote-slot">
+              <img src="emotes/feels-okay-man.webp" alt="" draggable="false" />
+            </span>
           </div>
         </div>
       </section>
