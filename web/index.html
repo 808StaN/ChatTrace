@@ -186,81 +186,116 @@
         <div class="hero-showcase">
           <svg
             class="showcase-backdrop"
-            viewBox="0 0 620 500"
+            viewBox="0 0 786 618"
             fill="none"
             aria-hidden="true"
             preserveAspectRatio="xMidYMid meet"
           >
             <defs>
+              <path
+                id="showcase-blob-shape"
+                d="M98 18C162 23 210 62 258 66C312 70 372 58 432 64C498 71 726 152 732 212C738 268 646 296 644 336C642 378 728 424 734 478C740 534 564 566 418 552C282 539 182 492 164 430C148 375 68 348 64 304C60 260 78 234 74 206C68 170 20 128 16 78C12 24 44 14 98 18Z"
+              />
+
               <linearGradient
-                id="blobDark"
-                x1="80"
-                y1="40"
-                x2="520"
-                y2="450"
+                id="blobLavenderMain"
+                x1="28"
+                y1="22"
+                x2="720"
+                y2="528"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stop-color="#5a1bd2" stop-opacity="0.62" />
-                <stop offset="100%" stop-color="#4310a3" stop-opacity="0.45" />
+                <stop offset="0%" stop-color="#cfa4ff" stop-opacity="0.78" />
+                <stop offset="34%" stop-color="#b47eff" stop-opacity="0.64" />
+                <stop offset="70%" stop-color="#9c62fd" stop-opacity="0.54" />
+                <stop offset="100%" stop-color="#884bf4" stop-opacity="0.48" />
               </linearGradient>
-              <linearGradient
-                id="blobLight"
-                x1="40"
-                y1="90"
-                x2="540"
-                y2="390"
+
+              <radialGradient
+                id="blobTopLeftMelt"
+                cx="0"
+                cy="0"
+                r="1"
                 gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(96 76) rotate(28) scale(230 170)"
               >
-                <stop offset="0%" stop-color="#a56eff" stop-opacity="0.34" />
-                <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.12" />
-              </linearGradient>
+                <stop offset="0%" stop-color="#e5cbff" stop-opacity="0.46" />
+                <stop offset="55%" stop-color="#c996ff" stop-opacity="0.18" />
+                <stop offset="100%" stop-color="#b47eff" stop-opacity="0" />
+              </radialGradient>
+
+              <radialGradient
+                id="topLeftDiffusedAura"
+                cx="0"
+                cy="0"
+                r="1"
+                gradientUnits="userSpaceOnUse"
+                gradientTransform="translate(92 74) rotate(24) scale(145 108)"
+              >
+                <stop offset="0%" stop-color="#dcbaff" stop-opacity="0.38" />
+                <stop offset="100%" stop-color="#b57eff" stop-opacity="0" />
+              </radialGradient>
+
+              <filter id="blobContourShadow" x="-20%" y="-20%" width="145%" height="145%">
+                <feGaussianBlur stdDeviation="8" />
+              </filter>
+
               <linearGradient
-                id="orbitStroke"
+                id="orbitRibbonFill"
                 x1="36"
-                y1="330"
-                x2="590"
-                y2="255"
+                y1="452"
+                x2="760"
+                y2="332"
                 gradientUnits="userSpaceOnUse"
               >
-                <stop offset="0%" stop-color="#d8b4fe" stop-opacity="0.85" />
-                <stop offset="50%" stop-color="#b983ff" stop-opacity="0.42" />
-                <stop offset="100%" stop-color="#ede9fe" stop-opacity="0.85" />
+                <stop offset="0%" stop-color="#e3bdff" stop-opacity="0.98" />
+                <stop offset="22%" stop-color="#c38dff" stop-opacity="0.84" />
+                <stop offset="50%" stop-color="#a569fc" stop-opacity="0.5" />
+                <stop offset="78%" stop-color="#cb96ff" stop-opacity="0.88" />
+                <stop offset="100%" stop-color="#e6c4ff" stop-opacity="0.98" />
               </linearGradient>
+
+              <filter id="orbitOuterGlow" x="-15%" y="-35%" width="130%" height="170%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
             </defs>
 
-            <path
-              d="M174 52c55-26 112 18 172 18 59 0 116-42 162-8 46 35 42 108 55 168 12 58 34 125-6 171-41 47-116 42-182 50-68 8-140 27-194-11-53-38-55-115-76-178-21-64-48-137 8-183 18-15 39-17 61-27Z"
-              fill="url(#blobDark)"
-            />
-            <path
-              d="M92 146c36-45 98-36 154-27 57 9 118-16 164 19 46 35 62 99 54 156-8 56-48 106-102 128-54 23-120 15-177-2-58-17-114-50-126-108-12-58 0-123 33-166Z"
-              fill="url(#blobLight)"
-            />
-
-            <path
-              d="M78 308c-42 36-30 88 48 105 98 21 312-26 458-118"
-              stroke="url(#orbitStroke)"
-              stroke-width="6"
-              stroke-linecap="round"
+            <!-- Soft shadow strictly following the main blob contour -->
+            <use
+              href="#showcase-blob-shape"
+              transform="translate(16 18)"
+              fill="#38108f"
+              opacity="0.35"
+              filter="url(#blobContourShadow)"
             />
 
-            <path
-              d="M276 34l6.5 16.5L299 57l-16.5 6.5L276 80l-6.5-16.5L253 57l16.5-6.5L276 34Z"
-              fill="#c8fb51"
+            <!-- Soft top-left diffused lavender melt -->
+            <ellipse
+              cx="92"
+              cy="74"
+              rx="145"
+              ry="108"
+              transform="rotate(24 92 74)"
+              fill="url(#topLeftDiffusedAura)"
             />
-            <path
-              d="M78 164l5.5 13.5L97 183l-13.5 5.5L78 202l-5.5-13.5L59 183l13.5-5.5L78 164Z"
-              fill="#c8fb51"
-            />
-            <path
-              d="M582 142l5 12.5 12.5 5-12.5 5-5 12.5-5-12.5-12.5-5 12.5-5 5-12.5Z"
-              fill="#c8fb51"
-            />
-            <path
-              d="M158 430l4 9.5 9.5 4-9.5 4-4 9.5-4-9.5-9.5-4 9.5-4 4-9.5Z"
-              fill="#b794ff"
-              opacity="0.7"
-            />
+
+            <!-- Main fluid lavender blob -->
+            <use href="#showcase-blob-shape" fill="url(#blobLavenderMain)" />
+            <use href="#showcase-blob-shape" fill="url(#blobTopLeftMelt)" />
+
+            <!-- Glowing 3D tilted elliptical swoosh ribbon -->
+            <g transform="translate(400 388) rotate(-9.5)" filter="url(#orbitOuterGlow)">
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M-358 0A358 58 0 1 0 358 0A358 58 0 1 0 -358 0ZM-347 -3A347 50 0 1 0 347 -3A347 50 0 1 0 -347 -3Z"
+                fill="url(#orbitRibbonFill)"
+              />
+            </g>
           </svg>
 
           <div class="callout-badge" aria-hidden="true">
